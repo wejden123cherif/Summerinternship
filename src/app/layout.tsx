@@ -27,5 +27,5 @@ export default function RootLayout({
         </ThemeProvider>
       </body>
     </html>
-  );
+  ); // Added missing closing parenthesis for return statement
 }

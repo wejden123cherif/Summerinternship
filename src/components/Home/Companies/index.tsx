@@ -19,6 +19,7 @@ const Companies = () => {
         speed: 2000,
         autoplaySpeed: 2000,
         cssEase: "linear",
+        rtl: true, // Added for Right-to-Left support
         responsive: [
             {
                 breakpoint: 1024,
@@ -26,7 +27,8 @@ const Companies = () => {
                     slidesToShow: 4,
                     slidesToScroll: 1,
                     infinite: true,
-                    dots: false
+                    dots: false,
+                    rtl: true // Ensure RTL is applied to responsive settings as well
                 }
             },
             {
@@ -35,7 +37,8 @@ const Companies = () => {
                     slidesToShow: 2,
                     slidesToScroll: 1,
                     infinite: true,
-                    dots: false
+                    dots: false,
+                    rtl: true // Ensure RTL is applied to responsive settings as well
                 }
             },
             {
@@ -44,20 +47,25 @@ const Companies = () => {
                     slidesToShow: 1,
                     slidesToScroll: 1,
                     infinite: true,
-                    dots: false
+                    dots: false,
+                    rtl: true // Ensure RTL is applied to responsive settings as well
                 }
             }
         ]
     };
 
     return (
-        <section className='text-center' >
+        <section id='companies' className='text-center' dir="rtl"> {/* Added dir="rtl" for the overall section */}
             <div className="container mx-auto lg:max-w-screen-xl md:max-w-screen-md px-4">
-                <h2 className="text-midnight_text text-2xl font-semibold">Trusted by companies of all sizes</h2>
+                {/* Translated headline to Arabic and aligned right for RTL context */}
+                <h2 className="text-midnight_text text-2xl font-semibold text-right mx-auto max-w-lg">
+                    موثوق بنا من قبل شركات بجميع الأحجام
+                </h2> {/* Arabic for "Trusted by companies of all sizes" */}
                 <div className="py-14 border-b ">
                     <Slider {...settings}>
                         {TruestedCompanies.map((item, i) =>
                             <div key={i}>
+                                {/* Image alt text might also need localization if it's user-facing */}
                                 <Image src={item.imgSrc} alt={item.imgSrc} width={116} height={36} />
                             </div>
                         )}

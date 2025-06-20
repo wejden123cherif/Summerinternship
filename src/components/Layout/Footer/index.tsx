@@ -1,40 +1,37 @@
 import Link from "next/link";
-import Image from "next/image";
-import Logo from "../Header/Logo";
+import Logo from "../Header/Logo"; // Adjust path as per your project
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { headerData } from "../Header/Navigation/menuData";
+import { headerData } from "../Header/Navigation/menuData"; // Adjust path as per your project
 
-const footer = () => {
+const Footer = () => {
   return (
-    <footer className="bg-deepSlate py-10" dir="rtl"> {/* Added dir="rtl" for right-to-left */}
+    <footer className="bg-deepSlate py-10" dir="rtl">
       <div className="container mx-auto lg:max-w-screen-xl md:max-w-screen-md px-4">
         <div className="grid grid-cols-1 gap-y-10 gap-x-16 sm:grid-cols-2 lg:grid-cols-12 xl:gap-x-8">
-          {/* First Column: Logo and Social Icons (Modified) */}
-          <div className='col-span-4 md:col-span-12 lg:col-span-4'>
-            {/* Wrapper for Logo to explicitly right-align it */}
-            <div className='flex '>
-              <Logo />
-            </div>
 
-            {/* Social icons section - now on its own line below the logo */}
-            {/* The div naturally creates a new line. justify-end will align icons to the right. */}
-            <div className='flex gap-8 mt-8 '>
-              {/* Re-ordered Links to appear visually as Instagram, Twitter, Facebook from right-to-left */}
-              <Link href="https://instagram.com" className='hover:text-primary text-black text-3xl'>
-                <Icon icon="tabler:brand-instagram" />
-              </Link>
-              <Link href="https://twitter.com" className='hover:text-primary text-black text-3xl'>
-                <Icon icon="tabler:brand-twitter" />
-              </Link>
-              <Link href="https://facebook.com" className='hover:text-primary text-black text-3xl'>
-                <Icon icon="tabler:brand-facebook" />
-              </Link>
+          {/* Logo and Social Icons - RIGHTMOST in RTL */}
+          <div className='col-span-4 md:col-span-12 lg:col-span-4 flex '>
+            <div className="flex flex-col items-end text-right">
+              <Logo />
+  
+              {/* Social icons under logo */}
+              <div className='flex gap-4 justify-start'>
+                <Link href="https://facebook.com" className='hover:text-primary text-black text-2xl'>
+                  <Icon icon="tabler:brand-facebook" />
+                </Link>
+                <Link href="https://twitter.com" className='hover:text-primary text-black text-2xl'>
+                  <Icon icon="tabler:brand-twitter" />
+                </Link>
+                <Link href="https://instagram.com" className='hover:text-primary text-black text-2xl'>
+                  <Icon icon="tabler:brand-instagram" />
+                </Link>
+              </div>
             </div>
           </div>
 
-          {/* Second Column: Links */}
+          {/* Links */}
           <div className="col-span-2">
-            <h3 className="mb-4 text-2xl font-medium text-right lg:text-right">روابط</h3> {/* Arabic for "Links" */}
+            <h3 className="mb-4 text-2xl font-medium text-right lg:text-right">روابط</h3>
             <ul>
               {headerData.map((item, index) => (
                 <li key={index} className="mb-2 text-black/50 hover:text-primary w-fit text-right"> {/* Adjusted text alignment */}
@@ -51,54 +48,36 @@ const footer = () => {
             </ul>
           </div>
 
-          {/* Third Column: Other */}
+          {/* Other */}
           <div className="col-span-2">
-            <h3 className="mb-4 text-2xl font-medium text-right lg:text-right">أخرى</h3> {/* Arabic for "Other" */}
+            <h3 className="mb-4 text-2xl font-medium text-right lg:text-right">أخرى</h3>
             <ul>
               <li className="mb-2 text-black/50 hover:text-primary w-fit text-right">
-                <Link href="#">
-                  من نحن {/* Arabic for "About Us" */}
-                </Link>
+                <Link href="#">من نحن</Link>
               </li>
               <li className="mb-2 text-black/50 hover:text-primary w-fit text-right">
-                <Link href="#">
-                  فريقنا {/* Arabic for "Our Team" */}
-                </Link>
+                <Link href="#">فريقنا</Link>
               </li>
               <li className="mb-2 text-black/50 hover:text-primary w-fit text-right">
-                <Link href="#">
-                  الوظائف {/* Arabic for "Career" */}
-                </Link>
+                <Link href="#">الوظائف</Link>
               </li>
               <li className="mb-2 text-black/50 hover:text-primary w-fit text-right">
-                <Link href="#">
-                  الخدمات {/* Arabic for "Services" */}
-                </Link>
+                <Link href="#">الخدمات</Link>
               </li>
               <li className="mb-2 text-black/50 hover:text-primary w-fit text-right">
-                <Link href="#">
-                  تواصل معنا {/* Arabic for "Contact" */}
-                </Link>
+                <Link href="#">تواصل معنا</Link>
               </li>
             </ul>
           </div>
 
-          {/* Fourth Column: Contact Info (Address, Phone, Email) */}
+          {/* Contact Info */}
           <div className='col-span-4 md:col-span-4 lg:col-span-4'>
-            {/* ADDRESS SECTION */}
-            <div className="flex items-center gap-2 flex-row-reverse justify-end"> {/* Flex adjustments for RTL */}
-              <Icon
-                icon="tabler:brand-google-maps"
-                className="text-primary text-3xl inline-block ms-2" // Icon on the right, margin to its left
-              />
-              <h5 className="text-lg text-black/60 text-right">925 شارع فيلبرت بنسلفانيا 18072</h5> {/* Arabic for address */}
+            <div className="flex items-center gap-2 flex-row-reverse justify-end">
+              <Icon icon="tabler:brand-google-maps" className="text-primary text-3xl inline-block ms-2" />
+              <h5 className="text-lg text-black/60 text-right">925 شارع فيلبرت بنسلفانيا 18072</h5>
             </div>
-            {/* PHONE SECTION */}
-            <div className="flex gap-2 mt-10 flex-row-reverse justify-end"> {/* Flex adjustments for RTL */}
-              <Icon
-                icon="tabler:phone"
-                className="text-primary text-3xl inline-block ms-2" // Icon on the right, margin to its left
-              />
+            <div className="flex gap-2 mt-10 flex-row-reverse justify-end">
+              <Icon icon="tabler:phone" className="text-primary text-3xl inline-block ms-2" />
               <h5 className="text-lg text-black/60">+45 3411-4411</h5>
             </div>
             {/* EMAIL SECTION */}
@@ -133,4 +112,4 @@ const footer = () => {
   )
 }
 
-export default footer;
+export default Footer;

@@ -133,47 +133,53 @@ export const MentorData: { profession: string; name: string; imgSrc: string }[] 
   },
 ]
 
-export const TestimonialData: { profession: string; comment: string; imgSrc: string; name: string; rating: number; }[] = [
+export const TestimonialData: {
+  profession: string;
+  comment: string;
+  imgSrc: string;
+  name: string;
+  rating: number;
+}[] = [
   {
-    name: "Robert Fox",
-    profession: 'CEO, Parkview Int.Ltd',
-    comment: 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour',
-    imgSrc: '/images/testimonial/user.svg',
+    name: "خالد الحارثي",
+    profession: "مهندس برمجيات - سلطنة عُمان",
+    comment: " AWS الدورات كانت منظمة وسهلة الفهم، وتمكنت من الحصول على شهادة بكل ثقة من .",
+    imgSrc: "/images/testimonial/user.svg",
     rating: 5
   },
   {
-    name: "Leslie Alexander",
-    profession: 'CEO, Parkview Int.Ltd',
-    comment: 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour',
-    imgSrc: '/images/mentor/user2.png',
+    name: "فاطمة الزدجالية",
+    profession: "محللة نظم - مسقط",
+    comment: "تعلمت مفاهيم الذكاء الاصطناعي بطريقة مبسطة وفعّالة، Smartovate  وأشكر  على هذا الجهد.",
+    imgSrc: "/images/mentor/user2.png",
     rating: 5
   },
   {
-    name: "Cody Fisher",
-    profession: 'CEO, Parkview Int.Ltd',
-    comment: 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour',
-    imgSrc: '/images/mentor/user3.png',
+    name: "سالم البوسعيدي",
+    profession: "مطور تطبيقات - صلالة",
+    comment: "المحتوى ممتاز والدعم الفني سريع ومفيد، أنصح الجميع بالالتحاق.",
+    imgSrc: "/images/mentor/user3.png",
     rating: 5
   },
   {
-    name: "Robert Fox",
-    profession: 'CEO, Parkview Int.Ltd',
-    comment: 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour',
-    imgSrc: '/images/mentor/user1.png',
+    name: "آمنة الحشارية",
+    profession: "طالبة تقنية معلومات - جامعة نزوى",
+    comment: "  n AZURE أكملت دورة  بنجاح حصلت على شهادة معترف بها من ",
+    imgSrc: "/images/mentor/user1.png",
     rating: 5
   },
   {
-    name: "Leslie Alexander",
-    profession: 'CEO, Parkview Int.Ltd',
-    comment: 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour',
-    imgSrc: '/images/mentor/user2.png',
+    name: "يحيى الهنائي",
+    profession: "خبير شبكات - البريمي",
+    comment: "الدورات تحتوي على أمثلة تطبيقية جعلت الفهم أسهل بكثير، تجربة رائعة فعلاً.",
+    imgSrc: "/images/mentor/user2.png",
     rating: 5
   },
   {
-    name: "Cody Fisher",
-    profession: 'CEO, Parkview Int.Ltd',
-    comment: 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour',
-    imgSrc: '/images/mentor/user3.png',
+    name: "شيماء العامرية",
+    profession: "مهندسة بيانات - صور",
+    comment: "أعجبتني طريقة الشرح ودقة المعلومات، الآن أنا أكثر استعداداً لسوق العمل.",
+    imgSrc: "/images/mentor/user3.png",
     rating: 5
   },
-]
+];
