@@ -4,6 +4,7 @@ import Header from "@/components/Layout/Header";
 import Footer from "@/components/Layout/Footer";
 import { ThemeProvider } from "next-themes";
 import ScrollToTop from "@/components/ScrollToTop";
+import { html } from "framer-motion/client";
 const font = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700"], });
 
 export default function RootLayout({
