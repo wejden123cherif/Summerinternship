@@ -56,31 +56,39 @@ const Courses = () => {
     };
 
     return (
-        <section id="courses">
+        <section id="courses" dir="rtl">
             <div className='container mx-auto lg:max-w-screen-xl md:max-w-screen-md px-4'>
                 <div className="sm:flex justify-between items-center mb-20">
-                    <h2 className="text-midnight_text text-4xl lg:text-5xl font-semibold mb-5 sm:mb-0">Popular courses.</h2>
-                    <Link href={'/'} className="text-primary text-lg font-medium hover:tracking-widest duration-500">Explore courses&nbsp;&gt;&nbsp;</Link>
+                    <h2 className="text-midnight_text text-4xl lg:text-5xl font-semibold mb-5 sm:mb-0">
+                        الدورات الأكثر شهرة
+                    </h2>
+                    <Link href={'/'} className="text-primary text-lg font-medium hover:tracking-widest duration-500">
+                        استكشف الدورات&nbsp;&lt;&nbsp;
+                    </Link>
                 </div>
                 <Slider {...settings}>
                     {courseData.map((items, i) => (
                         <div key={i}>
                             <div className='bg-white m-3 mb-12 px-3 pt-3 pb-12 shadow-course-shadow rounded-2xl h-full'>
-                                <div className="relative rounded-3xl">
-                                    <Image src={items.imgSrc} alt="course-image" width={389} height={262} className="m-auto clipPath" />
+                                <div className="relative rounded-3xl" style={{ width: "370px", height: "262px" }} >
+                                    <Image src={items.imgSrc} style={{ borderRadius: "12px", width: "100%", height: "100%" }} alt="صورة الدورة" width={389} height={262} className="m-auto clipPath" />
                                     <div className="absolute right-5 -bottom-2 bg-secondary rounded-full p-6">
-                                        <h3 className="text-white uppercase text-center text-sm font-medium">best <br /> seller</h3>
+                                        <h3 className="text-white uppercase text-center text-sm font-medium">
+                                            الأكثر<br />مبيعًا
+                                        </h3>
                                     </div>
                                 </div>
 
                                 <div className="px-3 pt-6">
-                                    <Link href="#" className='text-2xl font-bold text-black max-w-75% inline-block'>{items.heading}</Link>
+                                    <Link href="#" className='text-2xl font-bold text-black max-w-75% inline-block'>
+                                        {items.heading}
+                                    </Link>
                                     <h3 className='text-base font-normal pt-6 text-black/75'>{items.name}</h3>
                                     <div className="flex justify-between items-center py-6 border-b">
                                         <div className="flex items-center gap-4">
                                             <h3 className="text-red-700 text-2xl font-medium">{items.rating}</h3>
                                             <div className="flex">
-                                                {renderStars(items.rating)} {/* Dynamic stars */}
+                                                {renderStars(items.rating)}
                                             </div>
                                         </div>
                                         <h3 className="text-3xl font-medium">${items.price}</h3>
@@ -91,14 +99,14 @@ const Courses = () => {
                                                 icon="solar:notebook-minimalistic-outline"
                                                 className="text-primary text-xl inline-block me-2"
                                             />
-                                            <h3 className="text-base font-medium text-black opacity-75">{items.classes} classes</h3>
+                                            <h3 className="text-base font-medium text-black opacity-75">{items.classes} دروس</h3>
                                         </div>
                                         <div className="flex gap-4">
                                             <Icon
                                                 icon="solar:users-group-rounded-linear"
                                                 className="text-primary text-xl inline-block me-2"
                                             />
-                                            <h3 className="text-base font-medium text-black opacity-75">{items.students} students</h3>
+                                            <h3 className="text-base font-medium text-black opacity-75">{items.students} طالب</h3>
                                         </div>
                                     </div>
                                 </div>
