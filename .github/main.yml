@@ -1,0 +1,49 @@
+name: CICD-smartovateai-website
+
+on:
+  push: dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout code
+      uses: actions/checkout@v2
+
+    - name: build docker images
+      run: |
+        cd frontend
+        docker build -t smartovate-frontend:latest .
+        cd ../backend
+        docker build -t smartovate-backend:latest .
+
+    - name: Configure AWS credentials via OIDC
+      uses: aws-actions/configure-aws-credentials@v3
+      with:
+        role-to-assume: arn:aws:iam::689347695271:role/OICD_connection
+        aws-region: eu-north-1
+        role-session-name: GitHubActionsSession
+        audience: sts.amazonaws.com
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Build, tag, and push
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: smartovateai_ecr
+
+    - name: push docker images to ecr
+      run: |
+        docker tag smartovate-frontend:latest $ECR_REGISTRY/$ECR_REPOSITORY:frontend-latest
+        docker tag smartovate-backend:latest $ECR_REGISTRY/$ECR_REPOSITORY:backend-latest
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:frontend-latest
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:backend-latest
+
+    - name: Deploy to EKS
+      run: |
+        kubectl apply -f eks/backend-deployment.yml
+        kubectl apply -f eks/frontend-deployment.yml
+        kubectl apply -f eks/backend-service.yml
+        kubectl apply -f eks/frontend-service.yml
