@@ -1,22 +1,24 @@
 FROM node:20-alpine3.21 AS builder
 
 WORKDIR /app
-
 COPY package*.json ./
+
 RUN npm ci --omit=dev
 
 COPY . .
 
 RUN npm run build
 
-FROM node:20-alpine3.21 AS runner
+# Step 2: Serve using NGINX
+FROM nginx:alpine
 
-WORKDIR /app
+RUN rm /etc/nginx/conf.d/default.conf
 
-COPY --from=builder /app .
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-RUN npm ci --omit=dev
+COPY --from=builder /app/out /usr/share/nginx/html
 
-EXPOSE 3000
+EXPOSE 80
 
-CMD ["npm", "start"]
+CMD ["nginx", "-g", "daemon off;"]
+
