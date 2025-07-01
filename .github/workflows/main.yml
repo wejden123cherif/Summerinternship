@@ -18,7 +18,6 @@ jobs:
         docker build -t smartovate-frontend:latest .
         cd ../backend
         docker build -t smartovate-backend:latest .
-        
     # - name: Configure AWS credentials via OIDC
     #   uses: aws-actions/configure-aws-credentials@v3
     #   with:
