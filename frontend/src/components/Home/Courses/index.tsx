@@ -9,6 +9,15 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { useEffect, useState } from 'react';
 
 const Courses = () => {
+    type Course = {
+        id: number;
+        image_url: string;
+        instructor: string;
+        price: number;
+        sessions_nbre: number;
+        student_count: number;
+        title: string;
+    };
 
     const settings = {
         dots: false,
@@ -55,11 +64,11 @@ const Courses = () => {
         );
     };
 
-    const [courseData, setCourse] = useState([]);
+    const [courseData, setCourse] = useState<Course[]>([]);
         useEffect(() => { 
             fetch('http://localhost:5000/get_bestsellers')
                 .then(response => response.json())
-                .then(data => setCourse(data))
+                .then((data: Course[]) => setCourse(data))
                 .catch(error => console.error('Error fetching course data:', error));
         }, []);
     
