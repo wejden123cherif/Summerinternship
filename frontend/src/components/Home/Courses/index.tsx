@@ -6,7 +6,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { courseData } from "@/app/api/data";
+import { useEffect, useState } from 'react';
 
 const Courses = () => {
 
@@ -55,6 +55,17 @@ const Courses = () => {
         );
     };
 
+    const [courseData, setCourse] = useState([]);
+        useEffect(() => { 
+            fetch('http://localhost:5000/get_bestsellers')
+                .then(response => response.json())
+                .then(data => setCourse(data))
+                .catch(error => console.error('Error fetching course data:', error));
+        }, []);
+    
+    console.log(courseData);
+    courseData.map((items, i) => {console.log(courseData[i].title);
+});
     return (
         <section id="courses" dir="rtl">
             <div className='container mx-auto lg:max-w-screen-xl md:max-w-screen-md px-4'>
@@ -71,7 +82,7 @@ const Courses = () => {
                         <div key={i}>
                             <div className='bg-white m-3 mb-12 px-3 pt-3 pb-12 shadow-course-shadow rounded-2xl h-full'>
                                 <div className="relative rounded-3xl" style={{ width: "370px", height: "262px" }} >
-                                    <Image src={items.imgSrc} style={{ borderRadius: "12px", width: "100%", height: "100%" }} alt="صورة الدورة" width={389} height={262} className="m-auto clipPath" />
+                                    <Image src={items.image_url} style={{ borderRadius: "12px", width: "100%", height: "100%" }} alt="صورة الدورة" width={389} height={262} className="m-auto clipPath" />
                                     <div className="absolute right-5 -bottom-2 bg-secondary rounded-full p-6">
                                         <h3 className="text-white uppercase text-center text-sm font-medium">
                                             الأكثر<br />مبيعًا
@@ -81,16 +92,16 @@ const Courses = () => {
 
                                 <div className="px-3 pt-6">
                                     <Link href="#" className='text-2xl font-bold text-black max-w-75% inline-block'>
-                                        {items.heading}
+                                        {items.title}
                                     </Link>
-                                    <h3 className='text-base font-normal pt-6 text-black/75'>{items.name}</h3>
+                                    <h3 className='text-base font-normal pt-6 text-black/75'>{items.instructor}</h3>
                                     <div className="flex justify-between items-center py-6 border-b">
-                                        <div className="flex items-center gap-4">
+                                        {/* <div className="flex items-center gap-4">
                                             <h3 className="text-red-700 text-2xl font-medium">{items.rating}</h3>
                                             <div className="flex">
                                                 {renderStars(items.rating)}
                                             </div>
-                                        </div>
+                                        </div> */}
                                         <h3 className="text-3xl font-medium">${items.price}</h3>
                                     </div>
                                     <div className="flex justify-between pt-6">
@@ -99,14 +110,14 @@ const Courses = () => {
                                                 icon="solar:notebook-minimalistic-outline"
                                                 className="text-primary text-xl inline-block me-2"
                                             />
-                                            <h3 className="text-base font-medium text-black opacity-75">{items.classes} دروس</h3>
+                                            <h3 className="text-base font-medium text-black opacity-75">{items.sessions_nbre} دروس</h3>
                                         </div>
                                         <div className="flex gap-4">
                                             <Icon
                                                 icon="solar:users-group-rounded-linear"
                                                 className="text-primary text-xl inline-block me-2"
                                             />
-                                            <h3 className="text-base font-medium text-black opacity-75">{items.students} طالب</h3>
+                                            <h3 className="text-base font-medium text-black opacity-75">{items.student_count} طالب</h3>
                                         </div>
                                     </div>
                                 </div>

@@ -4,10 +4,12 @@ from .models import User, Certification, Quiz, Job
 from .utils import format_response
 import os
 import boto3
-from app.services import add_certifications , get_certifications
+from app.services import add_certifications , get_certifications , delete_certification, update_certification, get_bestsellers
+from flask_cors import CORS
 
 
 bp = Blueprint('main', __name__)
+CORS(bp)
 
 @bp.route('/hello')
 def index():
@@ -21,3 +23,14 @@ def get_certifications_route():
 def add_certifications_route():
     data = request.get_json()
     return add_certifications()
+@bp.route('/delete_certification/<int:cert_id>', methods=['DELETE'])
+def delete_certification_route(cert_id):
+    return delete_certification(cert_id)
+
+@bp.route('/update_certification/<int:cert_id>', methods=['PUT'])
+def update_certification_route(cert_id):
+    return update_certification(cert_id)
+
+@bp.route('/get_bestsellers', methods=['GET'])
+def get_bestsellers_route():
+    return get_bestsellers()

@@ -12,6 +12,12 @@ class Certification(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     quizzes = db.relationship('Quiz', backref='certification', lazy=True)
+    instructor = db.Column(db.String(100), nullable=True)
+    price = db.Column(db.Float, nullable=True)
+    sessions_nbre = db.Column(db.Integer, nullable=True)
+    image_url = db.Column(db.String(200), nullable=True)
+    student_count = db.Column(db.Integer, default=0)
+    # rating = db.Column(db.Float, default=0.0)
 
 class Quiz(db.Model):
     id = db.Column(db.Integer, primary_key=True)
