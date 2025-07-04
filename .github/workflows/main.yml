@@ -32,19 +32,22 @@ jobs:
       uses: aws-actions/amazon-ecr-login@v1
 
     - name: Build, tag, and push
-      run: echo "Building, tagging, and pushing images..."
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: smartovate-website
-
-    - name: push docker images to ecr
+        ECR_REPOSITORY_FRONTEND: smartovate-website-frontend
+        ECR_REPOSITORY_BACKEND: smartovate-website-backend
       run: |
         cd frontend
         docker build -t smartovate-frontend:latest .
         cd ../backend
         docker build -t smartovate-backend:latest .
-        docker tag smartovate-frontend:latest $ECR_REGISTRY/$ECR_REPOSITORY:frontend-latest
-        docker tag smartovate-backend:latest $ECR_REGISTRY/$ECR_REPOSITORY:backend-latest
+        docker tag smartovate-frontend:latest $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:latest
+        docker tag smartovate-backend:latest $ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:latest
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:latest
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:latest
+
+    - name: push docker images to ecr
+      run: |
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:frontend-latest
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:backend-latest
     # - name: Deploy to EKS
