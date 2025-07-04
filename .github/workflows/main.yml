@@ -19,17 +19,17 @@ jobs:
     - name: checkout code
       uses: actions/checkout@v2
 
-    - name: build docker images
-      run: |
-        cd frontend
-        docker build -t smartovate-frontend:latest .
-        cd ../backend
-        docker build -t smartovate-backend:latest .
+    # - name: build docker images
+    #   run: |
+    #     cd frontend
+    #     docker build -t smartovate-frontend:latest .
+    #     cd ../backend
+    #     docker build -t smartovate-backend:latest .
 
     - name: Configure AWS credentials via OIDC
       uses: aws-actions/configure-aws-credentials@v3
       with:
-        role-to-assume: arn:aws:iam::014498640042:role/OICD
+        role-to-assume: arn:aws:iam::014498640042:role/OIDC
         aws-region: eu-north-1
         role-session-name: GitHubActionsSession
         audience: sts.amazonaws.com
