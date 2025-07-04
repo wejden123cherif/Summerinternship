@@ -1,7 +1,9 @@
-from .models import Certification
+from .models import Certification, Feedback, User
 from . import db
-from flask import request
+from flask import request, jsonify
 from .utils import format_response
+from flask_login import current_user,login_required
+
 
 def add_certifications():
     data = request.get_json()
@@ -125,3 +127,49 @@ def delete_certification(cert_id):
     db.session.commit()
 
     return format_response({"message": "Certification deleted successfully"}, status=200)
+
+
+# ----------------------------------------------------------------------------------------------
+# Feedback Service:
+
+def get_feedbacks():
+    feedbacks = Feedback.query.all()
+    results = []
+    for feedback in feedbacks:
+        results.append({
+            "id": feedback.id,
+            "user_id": feedback.user_id,
+            "comment": feedback.comment
+        })
+    for result in results:
+        user = User.query.get(result["user_id"])    
+        result["username"] = user.username if user else "Unknown User"
+        result["profession"] = user.profession if user else "Unknown Profession"
+    return results
+
+# @login_required
+def add_feedback():
+    data = request.get_json()
+    comment = data.get("comment")
+    username = data.get("username")
+    profession = data.get("profession")
+    user_id = data.get("user_id")
+
+    if not comment:
+        return jsonify({"error": "Comment is required"}), 400
+
+    # current_user is the logged-in user instance
+    new_feedback = Feedback(user_id=current_user.id, comment=comment)
+    db.session.add(new_feedback)
+    db.session.commit()
+
+    return jsonify({
+        "message": "Feedback added successfully",
+        "feedback": {
+            "id": new_feedback.id,
+            "user_id": user_id,
+            "username": username,
+            "profession": profession,
+            "comment": new_feedback.comment,
+        }
+    }), 201

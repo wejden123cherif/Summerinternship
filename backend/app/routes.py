@@ -4,7 +4,7 @@ from .models import User, Certification, Quiz, Job
 from .utils import format_response
 import os
 import boto3
-from app.services import add_certifications , get_certifications , delete_certification, update_certification, get_bestsellers
+from app.services import add_certifications, add_feedback , get_certifications , delete_certification, get_feedbacks, update_certification, get_bestsellers
 from flask_cors import CORS
 
 
@@ -34,3 +34,11 @@ def update_certification_route(cert_id):
 @bp.route('/get_bestsellers', methods=['GET'])
 def get_bestsellers_route():
     return get_bestsellers()
+
+@bp.route('/get_feedbacks', methods=['GET'])
+def get_feedbacks_route():
+    return get_feedbacks()
+
+@bp.route('/add_feedback', methods=['POST'])
+def add_feedback_route():
+    return add_feedback()

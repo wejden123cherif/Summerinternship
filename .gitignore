@@ -34,7 +34,7 @@
 /backend/migrations
 /backend/venv
 /frontend/markdown
-
+.env
 # vercel
 /frontend/.vercel
 

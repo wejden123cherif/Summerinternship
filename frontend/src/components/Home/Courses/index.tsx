@@ -66,15 +66,12 @@ const Courses = () => {
 
     const [courseData, setCourse] = useState<Course[]>([]);
         useEffect(() => { 
-            fetch('http://localhost:5000/get_bestsellers')
+            fetch('http://backend:5000/get_bestsellers')
                 .then(response => response.json())
                 .then((data: Course[]) => setCourse(data))
                 .catch(error => console.error('Error fetching course data:', error));
         }, []);
-    
-    console.log(courseData);
-    courseData.map((items, i) => {console.log(courseData[i].title);
-});
+
     return (
         <section id="courses" dir="rtl">
             <div className='container mx-auto lg:max-w-screen-xl md:max-w-screen-md px-4'>
@@ -99,7 +96,7 @@ const Courses = () => {
                                     </div>
                                 </div>
 
-                                <div className="px-3 pt-6">
+                                <div className="px-3 pt-6"> 
                                     <Link href="#" className='text-2xl font-bold text-black max-w-75% inline-block'>
                                         {items.title}
                                     </Link>
