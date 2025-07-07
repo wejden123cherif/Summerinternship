@@ -1,4 +1,3 @@
-
 from flask import Flask
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
@@ -6,13 +5,14 @@ from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_cors import CORS
 from config import Config
-
-
+from flask_cors import CORS
+from flask_mail import Mail
 
 db = SQLAlchemy()
 login_manager = LoginManager()
 login_manager.login_view = 'routes.login'  # Update to reference blueprint route
 migrate = Migrate()
+mail = Mail()
 
 
 def create_app():
@@ -20,7 +20,7 @@ def create_app():
     app.config.from_object(Config)
 
     CORS(app, resources={
-        r"/*": {
+        r"/api/*": {
             "origins": ["http://localhost:3000","https://www.smartovateai.com"],
             "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
             "allow_headers": ["Content-Type", "Accept", "Authorization"],
@@ -29,6 +29,8 @@ def create_app():
     })
 
     db.init_app(app)
+    mail.init_app(app)
+
     migrate.init_app(app, db)
     
     from .routes import bp as main_bp

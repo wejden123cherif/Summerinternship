@@ -2,9 +2,8 @@ from app import db, login_manager
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
-# from app.s3_utils import generate_presigned_url
+from app.s3_utils import generate_presigned_url
 from datetime import datetime
-
 # Association tables
 user_certifications = db.Table(
     'user_certifications',
@@ -44,6 +43,8 @@ class Feedback(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     comment = db.Column(db.Text, nullable=False)
+    
+#password wlaet password-hash 
 
 class Certification(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -74,12 +75,15 @@ class Job(db.Model):
 
 class PaymentLog(db.Model):
     id = db.Column(db.String(255), primary_key=True)
-    certificate_id = db.Column(db.Integer)
-    user_id = db.Column(db.Integer, nullable=True)
-    event_type = db.Column(db.String(100))
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-
-
+    certificate_id = db.Column(db.Integer, db.ForeignKey('certification.id'))
+    event_type = db.Column(db.String(255))
+    customer_email = db.Column(db.String(255))
+    customer_name = db.Column(db.String(255))
+    customer_phone = db.Column(db.String(255))
+    customer_address = db.Column(db.JSON)
+    payment_method = db.Column(db.String(50))
+    promo_code = db.Column(db.String(50))  # Add this
+    certificate = db.relationship('Certification', backref='payment_logs')
 
 class Subpart(db.Model):
     id = db.Column(db.Integer, primary_key=True)
