@@ -4,7 +4,7 @@ from .models import User, Certification, Quiz, Job
 from .utils import format_response
 import os
 import boto3
-from app.services import add_certifications, add_feedback , get_certifications , delete_certification, get_feedbacks, update_certification, get_bestsellers
+from app.services import add_certifications, add_feedback , get_certifications , delete_certification, get_course, get_feedbacks, get_instructors, update_certification, get_bestsellers
 from flask_cors import CORS
 
 
@@ -19,7 +19,7 @@ def index():
 def get_certifications_route():
     return get_certifications()
 
-@bp.route('/add_certifications', methods=['POST'])
+@bp.route('/add_certification', methods=['POST'])
 def add_certifications_route():
     data = request.get_json()
     return add_certifications()
@@ -30,6 +30,10 @@ def delete_certification_route(cert_id):
 @bp.route('/update_certification/<int:cert_id>', methods=['PUT'])
 def update_certification_route(cert_id):
     return update_certification(cert_id)
+
+@bp.route("/get_certification/<int:course_id>", methods=["GET"])
+def get_course_route(course_id):
+    return get_course(course_id)
 
 @bp.route('/get_bestsellers', methods=['GET'])
 def get_bestsellers_route():
@@ -42,3 +46,9 @@ def get_feedbacks_route():
 @bp.route('/add_feedback', methods=['POST'])
 def add_feedback_route():
     return add_feedback()
+
+@bp.route('/get_instructors', methods=['GET'])
+def get_instructors_route():
+    return get_instructors()
+
+

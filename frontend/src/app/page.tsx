@@ -1,7 +1,7 @@
 import React from "react";
 import Hero from "@/components/Home/Hero";
 import Companies from "@/components/Home/Companies";
-import Courses from "@/components/Home/Courses";
+import Courses from "../components/Home/Courses";
 import Testimonial from "@/components/Home/Testimonials";
 import Newsletter from "@/components/Home/Newsletter";
 import { Metadata } from "next";

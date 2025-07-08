@@ -1,4 +1,4 @@
-from .models import Certification, Feedback, User
+from .models import Certification, Feedback, Instructor, User
 from . import db
 from flask import request, jsonify
 from .utils import format_response
@@ -7,32 +7,69 @@ from flask_login import current_user,login_required
 
 def add_certifications():
     data = request.get_json()
+
+    # Validate required fields
     if not data or 'title' not in data or not data['title'].strip():
         return format_response({"error": "Title cannot be empty"}, status=400)
-    
+    if 'description' not in data or not data['description'].strip():
+        return format_response({"error": "Description cannot be empty"}, status=400)
+    if 'instructor' not in data or not isinstance(data['instructor'], dict):
+        return format_response({"error": "Instructor data must be provided"}, status=400)
+
+    # Extract certification fields
     title = data['title'].strip()
-    price = data['price'] if 'price' in data else None
-    sessions_nbre = data['sessions_nbre'] if 'sessions_nbre' in data else None  
-    image_url = data['image_url'] if 'image_url' in data else None
-    instructor = data['instructor'] if 'instructor' in data else None
+    description = data['description'].strip()
+    price = data.get('price', 0.0)
+    sessions_nbre = data.get('sessions_nbre', 0)
+    image_url = data.get('image_url')
+    level = data.get('level')
 
-    
+    # Extract instructor fields
+    instructor_data = data['instructor']
+    name = instructor_data.get('name')
+    specialization = instructor_data.get('specialization')
 
+    if not name or not specialization:
+        return format_response({"error": "Instructor name and specialization are required"}, status=400)
 
+    # Check if the instructor already exists (e.g., by name and specialization)
+    instructor = Instructor.query.filter_by(name=name, specialization=specialization).first()
+    if not instructor:
+        # Create instructor
+        instructor = Instructor(
+            name=name,
+            bio=instructor_data.get('bio'),
+            specialization=specialization,
+            email=instructor_data.get('email')
+        )
+        db.session.add(instructor)
+        db.session.flush()  # Get instructor.id before commit
+
+    # Check for duplicate certification
     existing = Certification.query.filter_by(title=title).first()
     if existing:
         return format_response({"error": "Certification already exists"}, status=409)
 
-    new_certification = Certification(title=title,price=price,
-                                      sessions_nbre=sessions_nbre,instructor=instructor,
-                                      image_url=image_url,student_count=0)
+    # Create certification
+    new_certification = Certification(
+        title=title,
+        description=description,
+        price=price,
+        sessions_nbre=sessions_nbre,
+        image_url=image_url,
+        level=level,
+        student_count=0,
+        instructor_id=instructor.id
+    )
     db.session.add(new_certification)
     db.session.commit()
 
     return format_response({
-        "message": "Certification added successfully",
-        "certification_id": new_certification.id
+        "message": "Certification and instructor added successfully",
+        "certification_id": new_certification.id,
+        "instructor_id": instructor.id
     }, status=201)
+
 
 def get_certifications():
     certifications = Certification.query.all()
@@ -42,12 +79,21 @@ def get_certifications():
             "id": cert.id,
             "title": cert.title,
             "price": cert.price,
-            "instructor": cert.instructor,
+            "instructor": {
+                "id": cert.instructor.id,
+                "name": cert.instructor.name,
+                "bio": cert.instructor.bio,
+                "specialization": cert.instructor.specialization,
+                "email": cert.instructor.email,
+                },
             "sessions_nbre": cert.sessions_nbre,
             "image_url": cert.image_url,
-            "student_count": cert.student_count
+            "student_count": cert.student_count,
+            "description":cert.description,
+            "level":cert.level
         })
     return result
+
 
 def get_certification_by_id(cert_id):
     certification = Certification.query.get(cert_id)
@@ -58,10 +104,13 @@ def get_certification_by_id(cert_id):
         "id": certification.id,
         "title": certification.title,
         "price": certification.price,
-        "instructor": certification.instructor,
+        "instructor_name": certification.instructor.name if certification.instructor else None,
         "sessions_nbre": certification.sessions_nbre,
         "image_url": certification.image_url,
-        "student_count": certification.student_count
+        "student_count": certification.student_count,
+        "description":certification.description,
+        "level":certification.level
+
     }   
 
 def get_bestsellers():
@@ -72,10 +121,12 @@ def get_bestsellers():
             "id": cert.id,
             "title": cert.title,
             "price": cert.price,
-            "instructor": cert.instructor,
+            "instructor_name": cert.instructor.name if cert.instructor else None,
             "sessions_nbre": cert.sessions_nbre,
             "image_url": cert.image_url,
-            "student_count": cert.student_count
+            "student_count": cert.student_count,
+            "description":cert.description,
+            "level":cert.level
         })
     return result   
 
@@ -105,10 +156,13 @@ def update_certification(cert_id):
     if 'image_url' in data:
         certification.image_url = data['image_url']
 
-    if 'instructor' in data:
-        certification.instructor = data['instructor']
     if 'student_count' in data:
         certification.student_count = data['student_count']
+        
+    if 'description' in data:
+        certification.description = data['description']
+    if 'level' in data:
+        certification.description = data['level']
 
     db.session.commit()
 
@@ -128,6 +182,22 @@ def delete_certification(cert_id):
 
     return format_response({"message": "Certification deleted successfully"}, status=200)
 
+
+def get_course(cert_id):
+    certification = Certification.query.get(cert_id)
+    if not certification:
+        return format_response({"error": "Certification not found"}, status=404)
+    return {
+        "id": certification.id, 
+        "title": certification.title,
+        "price": certification.price,
+        "instructor_name": certification.instructor.name if certification.instructor else None,
+        "sessions_nbre": certification.sessions_nbre,
+        "image_url": certification.image_url,
+        "student_count": certification.student_count,
+        "description": certification.description,
+        "level":certification.level
+    }
 
 # ----------------------------------------------------------------------------------------------
 # Feedback Service:
@@ -173,3 +243,34 @@ def add_feedback():
             "comment": new_feedback.comment,
         }
     }), 201
+
+
+# ---------------------------------------------------------------
+# Instructor service:
+
+def get_instructors():
+    Instructors = Instructor.query.all()
+    result = []
+    for instr in Instructors:
+        result.append({
+            "id": instr.id,
+            "name": instr.name,
+            "bio": instr.bio,
+            "specialization": instr.specialization,
+            "email": instr.email,
+            "certifications": [ 
+                    {
+                        "id": cert.id,
+                        "title": cert.title,
+                        "description": cert.description,
+                        "price": cert.price,
+                        "sessions_nbre": cert.sessions_nbre,
+                        "image_url":cert.image_url,
+                        "level": cert.level,
+                        "student_count": cert.student_count,
+                        "instructor_id": cert.instructor_id
+                    }
+                    for cert in instr.certifications
+                ]
+        })
+    return result

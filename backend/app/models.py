@@ -45,23 +45,34 @@ class Feedback(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     comment = db.Column(db.Text, nullable=False)
 
+class Instructor(db.Model):
+    id= db.Column(db.Integer, primary_key=True)
+    name=db.Column(db.String, nullable=False)
+    bio=db.Column(db.String, nullable=True)
+    specialization=db.Column(db.String, nullable=False)
+    email=db.Column(db.String, nullable=True)
+
+    certifications=db.relationship('Certification',backref='instructor',lazy=True)
+
+
 class Certification(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    description = db.Column(db.Text, nullable=True)  # Added description
-    name = db.Column(db.String(128), nullable=False) #title
+    description = db.Column(db.Text, nullable=False)  # Added description
+    title = db.Column(db.String(128), nullable=False) #title
     #quizzes = db.relationship('Quiz', backref='certification', lazy=True)
-    instructor = db.Column(db.String(100), nullable=True)
-    price = db.Column(db.Float, nullable=True)
-    #sessions_nbre = db.Column(db.Integer, nullable=True) ebhc tehseb bel count 
+    instructor_id = db.Column(db.Integer, db.ForeignKey('instructor.id'), nullable=False)
+    price = db.Column(db.Float, nullable=False)
+    sessions_nbre = db.Column(db.Integer, nullable=False) #bech tehseb bel count 
     image_url = db.Column(db.String(200), nullable=True)
     student_count = db.Column(db.Integer, default=0)
+    level=db.Column(db.String(200),nullable=True)
     # rating = db.Column(db.Float, default=0.0)
 
 class Quiz(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     subpart_id = db.Column(db.Integer, db.ForeignKey('subpart.id', ondelete='CASCADE'), nullable=True)
     question = db.Column(db.String(256))
-    options = db.Column(db.JSON)
+    # options = db.Column(db.JSON,nullable=False, default=list)
     answer = db.Column(db.String(128))
     timestamp = db.Column(db.Float) # When to show the quiz in the video
 

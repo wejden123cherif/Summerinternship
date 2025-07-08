@@ -5,14 +5,16 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+    image: test_front_smartovate
     ports: 
-      - "80:80"
+      - "8000:3000"
     depends_on:
       - backend
   backend:
     build:
       context: ./backend
       dockerfile: dockerfile
+    image: test_back_smartovate
     ports: 
       - "5000:5000"
     environment:

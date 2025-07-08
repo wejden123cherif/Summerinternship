@@ -12,13 +12,15 @@ const Courses = () => {
     type Course = {
         id: number;
         image_url: string;
-        instructor: string;
         price: number;
+        instructor_name: string;
         sessions_nbre: number;
         student_count: number;
         title: string;
+        level: string;
+        description: string;
     };
-
+  
     const settings = {
         dots: false,
         infinite: true,
@@ -66,73 +68,97 @@ const Courses = () => {
 
     const [courseData, setCourse] = useState<Course[]>([]);
         useEffect(() => { 
-            fetch('http://backend:5000/get_bestsellers')
+            fetch('http://localhost:5000/get_bestsellers')
                 .then(response => response.json())
                 .then((data: Course[]) => setCourse(data))
                 .catch(error => console.error('Error fetching course data:', error));
         }, []);
 
     return (
-        <section id="courses" dir="rtl">
-            <div className='container mx-auto lg:max-w-screen-xl md:max-w-screen-md px-4'>
-                <div className="sm:flex justify-between items-center mb-20">
-                    <h2 className="text-midnight_text text-4xl lg:text-5xl font-semibold mb-5 sm:mb-0">
-                        الدورات الأكثر شهرة
-                    </h2>
-                    <Link href={'/'} className="text-primary text-lg font-medium hover:tracking-widest duration-500">
-                        استكشف الدورات&nbsp;&lt;&nbsp;
-                    </Link>
-                </div>
-                <Slider {...settings}>
-                    {courseData.map((items, i) => (
-                        <div key={i}>
-                            <div className='bg-white m-3 mb-12 px-3 pt-3 pb-12 shadow-course-shadow rounded-2xl h-full'>
-                                <div className="relative rounded-3xl" style={{ width: "370px", height: "262px" }} >
-                                    <Image src={items.image_url} style={{ borderRadius: "12px", width: "100%", height: "100%" }} alt="صورة الدورة" width={389} height={262} className="m-auto clipPath" />
-                                    <div className="absolute right-5 -bottom-2 bg-secondary rounded-full p-6">
-                                        <h3 className="text-white uppercase text-center text-sm font-medium">
-                                            الأكثر<br />مبيعًا
-                                        </h3>
-                                    </div>
-                                </div>
+        <section id="courses" dir="rtl" className="py-20 bg-gradient-to-b from-gray-50 to-white">
+      <div className="container mx-auto lg:max-w-screen-xl md:max-w-screen-md px-4">
+        {/* Static Introductory Content */}
+        <div className="text-center mb-12">
+          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4 animate-fade-in">
+            الدورات الأكثر شهرة
+          </h2>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed animate-fade-in delay-100">
+            اكتشف مجموعتنا من الدورات المصممة لتعزيز مهاراتك المهنية وتحقيق أهدافك التعليمية. كل دورة تقدم محتوى عمليًا وشهادة معترف بها لدعم مسيرتك المهنية.
+          </p>
+        </div>
 
-                                <div className="px-3 pt-6"> 
-                                    <Link href="#" className='text-2xl font-bold text-black max-w-75% inline-block'>
-                                        {items.title}
-                                    </Link>
-                                    <h3 className='text-base font-normal pt-6 text-black/75'>{items.instructor}</h3>
-                                    <div className="flex justify-between items-center py-6 border-b">
-                                        {/* <div className="flex items-center gap-4">
-                                            <h3 className="text-red-700 text-2xl font-medium">{items.rating}</h3>
-                                            <div className="flex">
-                                                {renderStars(items.rating)}
-                                            </div>
-                                        </div> */}
-                                        <h3 className="text-3xl font-medium">${items.price}</h3>
-                                    </div>
-                                    <div className="flex justify-between pt-6">
-                                        <div className="flex gap-4">
-                                            <Icon
-                                                icon="solar:notebook-minimalistic-outline"
-                                                className="text-primary text-xl inline-block me-2"
-                                            />
-                                            <h3 className="text-base font-medium text-black opacity-75">{items.sessions_nbre} دروس</h3>
-                                        </div>
-                                        <div className="flex gap-4">
-                                            <Icon
-                                                icon="solar:users-group-rounded-linear"
-                                                className="text-primary text-xl inline-block me-2"
-                                            />
-                                            <h3 className="text-base font-medium text-black opacity-75">{items.student_count} طالب</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </Slider>
+        {/* Slider */}
+        <Slider {...settings}>
+          {courseData.map((items, i) => (
+            <div key={i} className="px-3">
+              <div className="bg-white m-3 mb-12 p-6 rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:-translate-y-2 border border-blue-100 h-full">
+                {/* Image Section */}
+                <div className="relative rounded-2xl overflow-hidden shadow-lg">
+                  <Image
+                    src={items.image_url}
+                    alt={items.title}
+                    width={370}
+                    height={262}
+                    className="object-cover w-full h-[262px] rounded-2xl"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                  <div className="absolute right-4 bottom-4 bg-teal-500 rounded-full px-6 py-2">
+                    <span className="text-white text-sm font-semibold uppercase">
+                      الأكثر مبيعًا
+                    </span>
+                  </div>
+                </div>
+
+                {/* Course Info Section */}
+                <div className="pt-6 space-y-4">
+                  <Link
+                    href={`/courses/${items.id}`}
+                    className="text-2xl font-bold text-gray-900 hover:text-blue-700 transition-colors duration-300 line-clamp-2"
+                  >
+                    {items.title}
+                  </Link>
+                  
+                  <h3 className="text-base font-medium text-gray-600">{items.instructor_name}</h3>
+                  <div className="flex justify-between items-center py-4 border-b border-gray-200">
+                    <span className="text-3xl font-bold text-blue-700">${items.price}</span>
+                    <span className="bg-blue-100 text-blue-700 text-sm font-semibold px-3 py-1 rounded-full">
+                      {items.instructor_name}
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="flex items-center gap-2">
+                      <Icon icon="solar:notebook-minimalistic-outline" className="text-blue-700 text-xl" />
+                      <span className="text-sm font-medium text-gray-700">{items.sessions_nbre} دروس</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Icon icon="solar:users-group-rounded-linear" className="text-blue-700 text-xl" />
+                      <span className="text-sm font-medium text-gray-700">{items.student_count} طالب</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Icon icon="solar:star-linear" className="text-blue-700 text-xl" />
+                      <span className="text-sm font-medium text-gray-700">{items.level}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-        </section>
+          ))}
+        </Slider>
+
+        {/* Static CTA Section */}
+        <div className="text-center mt-12">
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-6 animate-fade-in delay-200">
+            هل أنت مستعد للارتقاء بمهاراتك؟ تصفح مجموعتنا الكاملة من الدورات وابدأ رحلتك التعليمية اليوم!
+          </p>
+          <Link
+            href="/courses"
+            className="inline-block bg-blue-700 text-white text-lg font-semibold px-8 py-3 rounded-xl hover:bg-blue-600 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+          >
+            استكشف جميع الدورات
+          </Link>
+        </div>
+      </div>
+    </section>
     );
 }
 
