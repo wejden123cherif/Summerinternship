@@ -2,11 +2,10 @@
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { useEffect, useState } from 'react';
 
 const Courses = () => {
     type Course = {
@@ -73,6 +72,8 @@ const Courses = () => {
                 .then((data: Course[]) => setCourse(data))
                 .catch(error => console.error('Error fetching course data:', error));
         }, []);
+
+    
 
     return (
         <section id="courses" dir="rtl" className="py-20 bg-gradient-to-b from-gray-50 to-white">
@@ -161,5 +162,4 @@ const Courses = () => {
     </section>
     );
 }
-
 export default Courses;

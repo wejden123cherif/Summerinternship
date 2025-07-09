@@ -66,10 +66,13 @@ const InstructorDetailsPage = ({ params }: instructorDetailsPageProps) => {
     <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12 pt-20 sm:pt-24 md:pt-32 max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-5xl" dir="rtl">
       {/* Centered Instructor Name as Title */}
       <div className="relative bg-white rounded-3xl shadow-2xl overflow-hidden mt-12 border border-blue-200 animate-fade-in">
-        <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-r from-blue-700 to-teal-500" />
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight">
-              {instructor.name}
-            </h1>
+        
+          <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-r from-blue-700 to-teal-500 z-0" />
+
+          {/* Instructor name */}
+          <h1 className="relative z-10 text-center pt-8 px-4 text-2xl sm:text-3xl md:text-4xl font-medium text-white tracking-tight">
+            {instructor.name}
+          </h1>
         </div>
       
       

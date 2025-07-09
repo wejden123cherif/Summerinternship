@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { Icon } from '@iconify/react'; // Good, no /dist/iconify.js needed
 import Link from 'next/link';
 // import { courseData } from '@/app/api/data';
+import { loadStripe } from "@stripe/stripe-js";
 
 interface CourseDetailsPageProps {
   params: {
@@ -52,6 +53,10 @@ type Instructor = {
 
 
   const course = courseData.find(c => c.id === Number(courseId));
+  
+const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+  ? loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
+  : Promise.resolve(null);
 
   if (!course) {
     return (
@@ -80,6 +85,55 @@ type Instructor = {
   //     </>
   //   );
   // };
+  const handlePurchase = async (course: Course) => {
+    console.log("Initiating purchase for course:", course.title);
+    if (!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
+      alert("Stripe غير مُهيأ بشكل صحيح. يرجى التواصل مع الدعم.");
+      console.error("STRIPE_PUBLISHABLE_KEY is not set");
+      return;
+    }
+     const stripe = await stripePromise;
+    if (!stripe) {
+      alert("فشل تهيئة Stripe. يرجى التحقق من الإعدادات والمحاولة مرة أخرى.");
+      console.error("Stripe failed to initialize");
+      return;
+    }
+
+    try {
+      const apiUrl = process.env.NODE_ENV === "production"
+        ? "https://www.smartovateai.com/api/create-checkout-session"
+        : "http://localhost:5000/api/create-checkout-session";
+      console.log("Fetching checkout session from:", apiUrl);
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ certificate_id: course.id }),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error(`Server responded with ${response.status}: ${errorText}`);
+        throw new Error(`Server error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("Checkout session response:", data);
+      if (data.error) {
+        console.error("Checkout session error:", data.error);
+        alert(`فشل بدء الدفع: ${data.error}`);
+        return;
+      }
+
+      const result = await stripe.redirectToCheckout({ sessionId: data.sessionId });
+      if (result.error) {
+        console.error("Redirect to checkout error:", result.error.message);
+        alert(`خطأ في الدفع: ${result.error.message}`);
+      }
+    } catch (error) {
+      console.error("Purchase error:", error);
+      alert("حدث خطأ أثناء بدء الدفع. يرجى المحاولة لاحقًا.");
+    }
+  };
 
   return (
     // ** MODIFICATION 1: Increased padding-top (pt-28) on the main container **
@@ -145,9 +199,11 @@ type Instructor = {
 
               {/* CTAs */}
               <div className="flex flex-wrap gap-4">
-                <button className="bg-blue-900 text-white text-xl font-semibold px-10 py-4 rounded-xl hover:bg-blue-800 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                  سجل الآن في الدورة
-                </button>
+                <button
+                      onClick={() => handlePurchase(course)}
+                      className="bg-blue-900 text-white text-xl font-semibold px-10 py-4 rounded-xl hover:bg-blue-800 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">                      
+                       سجل الآن في الدورة
+                    </button>
               </div>
             </div>
           </div>
@@ -247,8 +303,11 @@ type Instructor = {
         <p className="text-gray-600 max-w-2xl mx-auto text-lg">
           هذه الشهادة هي بوابتك لتحقيق التميز المهني. مع منهج دراسي مصمم لتلبية متطلبات السوق، ستكتسب المهارات التي تجعلك متميزًا في مجالك. انضم الآن واستثمر في مستقبلك!
         </p>
-        <button className="mt-6 bg-teal-600 text-white text-lg font-semibold px-8 py-3 rounded-xl hover:bg-teal-700 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-          ابدأ الآن
+        <button
+          onClick={() => handlePurchase(course)}
+          className="mt-6 bg-teal-600 text-white text-lg font-semibold px-8 py-3 rounded-xl hover:bg-teal-700 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">                      
+          disabled={!course.price}
+            ابدأ الآن
         </button>
       </div>
     </div>
