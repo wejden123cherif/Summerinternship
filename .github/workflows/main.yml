@@ -23,9 +23,9 @@ jobs:
     - name: Configure AWS credentials via OIDC
       uses: aws-actions/configure-aws-credentials@v3
       with:
-        role-to-assume: arn:aws:iam::014498640042:role/DevOpsTeam
+        role-to-assume: arn:aws:iam::014498640042:role/GitHubActionsRole
         aws-region: eu-north-1
-        role-session-name: Ner
+        role-session-name: GitHubActionsSession
         audience: sts.amazonaws.com
 
     - name: Login to Amazon ECR
@@ -68,6 +68,7 @@ jobs:
     #     branches:
     #     - main
     #     - develop
+    #     - nerminA 
     #   pull_request:
     #     branches:
     #     - main
