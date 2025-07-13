@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: backend
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: backend
@@ -13,13 +13,13 @@ spec:
         app: backend
     spec:
       containers:
-      - image: smartovate-backend:latest
+      - image: ${ECR_REGISTRY}/smartovate-website-backend:latest
         name: backend
         ports:
-        - containerPort: 8080
+        - containerPort: 5000
         env:
         - name: DATABASE_URL
-          value: "postgres://user:password@postgres-service:5432/dbname"
+          value: "postgresql://postgres:1234@db-service:5432/dbSubul"
         resources:
           requests:
             memory: "256Mi"

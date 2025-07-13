@@ -32,17 +32,18 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
-    # - name: Build & tag frontend
-    #   env:
-    #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-    #     ECR_REPOSITORY_FRONTEND: smartovate-website-frontend
-    #   run: |
-    #     echo "ECR Registry: $ECR_REGISTRY"
-    #     cd frontend
-    #     docker build -t smartovate-frontend:latest .
-    #     docker tag smartovate-frontend:latest $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:latest
-    #     docker push $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:latest
-    #     cd ..
+    - name: Build & tag frontend
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY_FRONTEND: smartovate-website-frontend
+      run: |
+        echo "ECR Registry: $ECR_REGISTRY"
+        cd frontend
+        docker build -t smartovate-frontend:latest .
+        docker tag smartovate-frontend:latest $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:latest
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:latest
+        cd ..
+
     - name: build & tag backend
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -53,15 +54,38 @@ jobs:
         docker tag smartovate-backend:latest $ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:latest
         docker push $ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:latest
 
-    - name: list ecr images
-      run: aws ecr describe-images --repository-name smartovate-website-backend
-    # - name: Deploy to EKS
-    #   run: |
-    #     kubectl apply -f eks/backend-deployment.yml
-    #     kubectl apply -f eks/frontend-deployment.yml
-    #     kubectl apply -f eks/backend-service.yml
-    #     kubectl apply -f eks/frontend-service.yml
-    # # ------------------
+    - name: Install and configure kubectl
+      run: |
+        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+        chmod +x kubectl
+        sudo mv kubectl /usr/local/bin
+
+    - name: Update kubeconfig for EKS
+      env:
+        EKS_CLUSTER_NAME: smartovatewebsite
+
+      run: |
+        aws eks update-kubeconfig --region eu-north-1 --name $EKS_CLUSTER_NAME
+
+    - name: Deploy backend to EKS
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+      run: |
+        envsubst < eks/backend-deployment.yml | kubectl apply -f -
+        kubectl apply -f eks/backend-service.yml
+
+    - name: deploy frontend to EKS
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+      run: |
+        envsubst < eks/frontend-deployment.yml | kubectl apply -f -
+        kubectl apply -f eks/frontend-service.yml
+
+    - name: Verify deployment
+      run: |
+        kubectl get pods 
+        kubectl get services
+    # ------------------
 
     # name: Deploy to AWS ECR and EKS
 

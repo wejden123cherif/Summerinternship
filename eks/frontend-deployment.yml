@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: smartovate-frontend:latest
+        image: ${ECR_REGISTRY}/smartovate-website-frontend:latest
         ports:
         - containerPort: 3000
         env:
