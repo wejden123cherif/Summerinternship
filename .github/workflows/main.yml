@@ -64,25 +64,23 @@ jobs:
         chmod +x kubectl
         sudo mv kubectl /usr/local/bin
 
-    - name: Update kubeconfig for EKS
+    - name: Update kubeconfig for EKS + deploy backend to EKS
       env:
         EKS_CLUSTER_NAME: smartovatewebsite
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
 
       run: |
         aws eks update-kubeconfig --region eu-north-1 --name $EKS_CLUSTER_NAME
-
-    - name: Deploy backend to EKS
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-      run: |
-        envsubst < eks/backend-deployment.yml | kubectl apply -f - --validate=false
+        envsubst < eks/backend-deployment.yml | kubectl apply -f -
         kubectl apply -f eks/backend-service.yml
 
     - name: deploy frontend to EKS
       env:
+        EKS_CLUSTER_NAME: smartovatewebsite
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
       run: |
-        envsubst < eks/frontend-deployment.yml | kubectl apply -f - --validate=false
+        aws eks update-kubeconfig --region eu-north-1 --name $EKS_CLUSTER_NAME
+        envsubst < eks/frontend-deployment.yml | kubectl apply -f -
         kubectl apply -f eks/frontend-service.yml
 
     # test:
