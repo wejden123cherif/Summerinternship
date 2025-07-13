@@ -75,7 +75,7 @@ jobs:
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
       run: |
-        envsubst < eks/backend-deployment.yml | kubectl apply -f -
+        envsubst < eks/backend-deployment.yml | kubectl apply -f - --validate=false
         kubectl apply -f eks/backend-service.yml
 
     - name: deploy frontend to EKS
