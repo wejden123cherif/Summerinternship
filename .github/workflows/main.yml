@@ -23,7 +23,7 @@ jobs:
     - name: Configure AWS credentials via OIDC
       uses: aws-actions/configure-aws-credentials@v3
       with:
-        role-to-assume: arn:aws:iam::014498640042:role/GitHubActionsRole
+        role-to-assume: arn:aws:iam::014498640042:role/OIDC
         aws-region: eu-north-1
         role-session-name: GitHubActionsSession
         audience: sts.amazonaws.com
@@ -59,8 +59,6 @@ jobs:
         docker push 014498640042.dkr.ecr.eu-north-1.amazonaws.com/smartovate-website-backend:latest
     - name: list ecr images
       run: aws ecr list-images --repository-name smartovate-website-backend
-
-      
     #     docker tag smartovate-backend:latest $ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:latest
 
     #     docker push $ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:latest
