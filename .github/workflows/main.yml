@@ -53,7 +53,11 @@ jobs:
         docker build -t smartovate-backend:latest .
         docker tag smartovate-backend:latest $ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:latest
         docker push $ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:latest
+        cd ..
 
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
     - name: Install and configure kubectl
       run: |
         curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
@@ -81,6 +85,9 @@ jobs:
         envsubst < eks/frontend-deployment.yml | kubectl apply -f -
         kubectl apply -f eks/frontend-service.yml
 
+  test:
+    runs-on: ubuntu-latest
+    steps:
     - name: Verify deployment
       run: |
         kubectl get pods 
