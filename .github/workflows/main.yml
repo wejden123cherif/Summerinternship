@@ -58,7 +58,7 @@ jobs:
         docker tag smartovate-backend:latest 014498640042.dkr.ecr.eu-north-1.amazonaws.com/smartovate-website-backend:latest
         docker push 014498640042.dkr.ecr.eu-north-1.amazonaws.com/smartovate-website-backend:latest
     - name: list ecr images
-      run: aws ecr list-images --repository-name smartovate-website-backend --query 'imageIds[*].imageTag' --output text
+      run: aws ecr describe-images --repository-name smartovate-website-backend
     #     docker tag smartovate-backend:latest $ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:latest
 
     #     docker push $ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:latest
