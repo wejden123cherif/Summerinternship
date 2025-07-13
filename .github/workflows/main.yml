@@ -32,17 +32,23 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
-    - name: Build & tag frontend
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY_FRONTEND: smartovate-website-frontend
+    # - name: Build & tag frontend
+    #   env:
+    #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+    #     ECR_REPOSITORY_FRONTEND: smartovate-website-frontend
+    #   run: |
+    #     echo "ECR Registry: $ECR_REGISTRY"
+    #     cd frontend
+    #     docker build -t smartovate-frontend:latest .
+    #     docker tag smartovate-frontend:latest $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:latest
+    #     docker push $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:latest
+    #     cd ..
+
+    - name: test aws connection
       run: |
-        echo "ECR Registry: $ECR_REGISTRY"
-        cd frontend
-        docker build -t smartovate-frontend:latest .
-        docker tag smartovate-frontend:latest $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:latest
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:latest
-        cd ..
+        aws sts get-caller-identity
+    - name: list ecr repos
+      run: aws ecr describe-repositories
 
     - name: build & tag backend
       env:
