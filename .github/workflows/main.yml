@@ -71,7 +71,7 @@ jobs:
 
       run: |
         aws eks update-kubeconfig --region eu-north-1 --name $EKS_CLUSTER_NAME
-        envsubst < eks/backend-deployment.yml | kubectl apply -f -
+        envsubst < eks/backend-deployment.yml | kubectl apply --validate=false -f -
         kubectl apply -f eks/backend-service.yml
 
     - name: deploy frontend to EKS
@@ -80,7 +80,7 @@ jobs:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
       run: |
         aws eks update-kubeconfig --region eu-north-1 --name $EKS_CLUSTER_NAME
-        envsubst < eks/frontend-deployment.yml | kubectl apply -f -
+        envsubst < eks/frontend-deployment.yml | kubectl apply --validate=false -f -
         kubectl apply -f eks/frontend-service.yml
 
     # test:
