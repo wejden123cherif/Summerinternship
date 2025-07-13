@@ -47,8 +47,6 @@ jobs:
     - name: test aws connection
       run: |
         aws sts get-caller-identity
-    - name: list ecr repos
-      run: aws ecr describe-repositories
 
     - name: build & tag backend
       env:
@@ -59,6 +57,10 @@ jobs:
         docker build -t smartovate-backend:latest .
         docker tag smartovate-backend:latest 014498640042.dkr.ecr.eu-north-1.amazonaws.com/smartovate-website-backend:latest
         docker push 014498640042.dkr.ecr.eu-north-1.amazonaws.com/smartovate-website-backend:latest
+    - name: list ecr images
+      run: aws ecr list-images --repository-name smartovate-website-backend
+
+      
     #     docker tag smartovate-backend:latest $ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:latest
 
     #     docker push $ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:latest
