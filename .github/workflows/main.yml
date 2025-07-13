@@ -44,7 +44,7 @@ jobs:
         docker push $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:latest
         cd ..
 
-    - name: build & tag backend
+    - name: Build & tag backend
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY_BACKEND: smartovate-website-backend
@@ -58,11 +58,8 @@ jobs:
     # deploy:
     #   runs-on: ubuntu-latest
     #   steps:
-    - name: Install and configure kubectl
-      run: |
-        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-        chmod +x kubectl
-        sudo mv kubectl /usr/local/bin
+    - name: Install kubectl
+      uses: azure/setup-kubectl@v3
 
     - name: Update kubeconfig for EKS + deploy backend to EKS
       env:
