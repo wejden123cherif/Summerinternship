@@ -48,6 +48,9 @@ jobs:
       run: |
         aws sts get-caller-identity
 
+    - name: delete images from ecr repositories
+      run: aws ecr batch-delete-image --repository-name smartovate-website-backend --region eu-north-1 --image-ids "$(aws ecr list-images --repository-name smartovate-website-backend --region eu-north-1 --query 'imageIds' --output json)"
+
     - name: build & tag backend
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
