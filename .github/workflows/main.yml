@@ -20,13 +20,13 @@ jobs:
     - name: checkout code
       uses: actions/checkout@v2
 
-    - name: Install kubectl
-      uses: azure/setup-kubectl@v3
+    # - name: Install kubectl
+    #   uses: azure/setup-kubectl@v3
 
     - name: Configure AWS credentials via OIDC
       uses: aws-actions/configure-aws-credentials@v3
       with:
-        role-to-assume: arn:aws:iam::014498640042:role/OIDC
+        role-to-assume: arn:aws:iam::014498640042:role/DevOpsTeamRole
         aws-region: eu-north-1
         role-session-name: GitHubActionsSession
         audience: sts.amazonaws.com
@@ -36,37 +36,37 @@ jobs:
         EKS_CLUSTER_NAME: smartovatewebsite
       run: |
         aws eks update-kubeconfig --region eu-north-1 --name $EKS_CLUSTER_NAME
-        kubectl config current-context
-    - name: Apply aws-auth ConfigMap
-      run: |
-        kubectl apply --validate=false -f eks/configmap.yml 
+      #  kubectl config current-context
+
+    - name: Validate kubectl access
+      run: kubectl get nodes
 
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
-    - name: Build & tag frontend
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY_FRONTEND: smartovate-website-frontend
-      run: |
-        echo "ECR Registry: $ECR_REGISTRY"
-        cd frontend
-        docker build -t smartovate-frontend:latest .
-        docker tag smartovate-frontend:latest $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:latest
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:latest
-        cd ..
+    # - name: Build & tag frontend
+    #   env:
+    #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+    #     ECR_REPOSITORY_FRONTEND: smartovate-website-frontend
+    #   run: |
+    #     echo "ECR Registry: $ECR_REGISTRY"
+    #     cd frontend
+    #     docker build -t smartovate-frontend:latest .
+    #     docker tag smartovate-frontend:latest $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:latest
+    #     docker push $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:latest
+    #     cd ..
 
-    - name: Build & tag backend
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY_BACKEND: smartovate-website-backend
-      run: |
-        cd backend
-        docker build -t smartovate-backend:latest .
-        docker tag smartovate-backend:latest $ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:latest
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:latest
-        cd ..
+    # - name: Build & tag backend
+    #   env:
+    #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+    #     ECR_REPOSITORY_BACKEND: smartovate-website-backend
+    #   run: |
+    #     cd backend
+    #     docker build -t smartovate-backend:latest .
+    #     docker tag smartovate-backend:latest $ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:latest
+    #     docker push $ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:latest
+    #     cd ..
 
     # deploy:
     #   runs-on: ubuntu-latest
@@ -74,17 +74,19 @@ jobs:
 
 
     - name: deploy backend to EKS
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
 
       run: |
-        aws sts get-caller-identity
-        kubectl apply --validate=false -f eks/backend-deployment.yml
+        envsubst < eks/backend-deployment.yml | kubectl apply --validate=false -f -
         kubectl apply -f eks/backend-service.yml
 
     - name: deploy frontend to EKS
-      # env:
-      #   ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+
       run: |
-        kubectl apply --validate=false -f eks/frontend-deployment.yml
+        envsubst < eks/frontend-deployment.yml | kubectl apply --validate=false -f -
         kubectl apply -f eks/frontend-service.yml
 
     # test:
