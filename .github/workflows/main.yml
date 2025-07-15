@@ -30,7 +30,6 @@ jobs:
         aws-region: eu-north-1
         role-session-name: GitHubActionsSession
         audience: sts.amazonaws.com
-      run: aws sts get-caller-identity
 
     - name: Update kubeconfig for EKS
       env:
