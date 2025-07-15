@@ -37,6 +37,24 @@ jobs:
       run: |
         aws eks update-kubeconfig --region eu-north-1 --name $EKS_CLUSTER_NAME
         kubectl config current-context
+    - name: Add GitHub OIDC role to aws-auth configmap
+      run: |
+        kubectl get configmap aws-auth -n kube-system -o yaml > aws-auth.yaml
+
+        # Check if the role already exists
+        if ! grep -q 'arn:aws:iam::014498640042:role/OIDC' aws-auth.yaml; then
+          echo "Patching aws-auth ConfigMap to include GitHub OIDC role..."
+
+          # Insert the new role under mapRoles
+          yq e '.data.mapRoles += "\n  - rolearn: arn:aws:iam::014498640042:role/OIDC\n    username: github-actions\n    groups:\n      - system:masters"' -i aws-auth.yaml
+
+          # Apply updated ConfigMap
+          kubectl apply -f aws-auth.yaml
+        else
+          echo "OIDC role already present in aws-auth ConfigMap. Skipping patch."
+        fi
+      env:
+        KUBECONFIG: /home/runner/.kube/config
 
     - name: Login to Amazon ECR
       id: login-ecr
