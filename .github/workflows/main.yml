@@ -30,6 +30,7 @@ jobs:
         aws-region: eu-north-1
         role-session-name: GitHubActionsSession
         audience: sts.amazonaws.com
+      run: aws sts get-caller-identity
 
     - name: Update kubeconfig for EKS
       env:
@@ -70,11 +71,12 @@ jobs:
     #   steps:
 
 
-    - name: Update kubeconfig for EKS + deploy backend to EKS
+    - name: deploy backend to EKS
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
 
       run: |
+        aws sts get-caller-identity
         envsubst < eks/backend-deployment.yml | kubectl apply --validate=false -f -
         kubectl apply -f eks/backend-service.yml
 
