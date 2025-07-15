@@ -37,10 +37,9 @@ jobs:
       run: |
         aws eks update-kubeconfig --region eu-north-1 --name $EKS_CLUSTER_NAME
         kubectl config current-context
-        aws eks get-token --cluster-name smartovatewebsite --region eu-north-1
     - name: Apply aws-auth ConfigMap
       run: |
-        kubectl apply -f eks/configmap.yml
+        kubectl apply --validate=false -f eks/configmap.yml 
 
     - name: Login to Amazon ECR
       id: login-ecr
