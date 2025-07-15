@@ -71,19 +71,17 @@ jobs:
 
 
     - name: deploy backend to EKS
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
 
       run: |
         aws sts get-caller-identity
-        envsubst < eks/backend-deployment.yml | kubectl apply --validate=false -f -
+        kubectl apply --validate=false -f eks/backend-deployment.yml
         kubectl apply -f eks/backend-service.yml
 
     - name: deploy frontend to EKS
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+      # env:
+      #   ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
       run: |
-        envsubst < eks/frontend-deployment.yml | kubectl apply --validate=false -f -
+        kubectl apply --validate=false -f eks/frontend-deployment.yml
         kubectl apply -f eks/frontend-service.yml
 
     # test:
