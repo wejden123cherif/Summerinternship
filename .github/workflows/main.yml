@@ -35,7 +35,7 @@ jobs:
       env:
         EKS_CLUSTER_NAME: smartovatewebsite
       run: |
-        aws eks update-kubeconfig --region eu-north-1 --name $EKS_CLUSTER_NAME
+        aws eks update-kubeconfig --region eu-north-1 --name $EKS_CLUSTER_NAME --profile DevOpsTeam-014498640042
       #  kubectl config current-context
 
     - name: Validate kubectl access
@@ -73,23 +73,23 @@ jobs:
     #   steps:
 
 
-    - name: deploy backend to EKS
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+    # - name: deploy backend to EKS
+    #   env:
+    #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
 
-      run: |
-        envsubst < eks/backend-deployment.yml | kubectl apply --validate=false -f -
-        kubectl apply -f eks/backend-service.yml
+    #   run: |
+    #     envsubst < eks/backend-deployment.yml | kubectl apply --validate=false -f -
+    #     kubectl apply -f eks/backend-service.yml
 
-    - name: deploy frontend to EKS
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+    # - name: deploy frontend to EKS
+    #   env:
+    #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
 
-      run: |
-        envsubst < eks/frontend-deployment.yml | kubectl apply --validate=false -f -
-        kubectl apply -f eks/frontend-service.yml
+    #   run: |
+    #     envsubst < eks/frontend-deployment.yml | kubectl apply --validate=false -f -
+    #     kubectl apply -f eks/frontend-service.yml
 
-    # test:
+    # # test:
     #   runs-on: ubuntu-latest
     #   steps:
     - name: Verify deployment
