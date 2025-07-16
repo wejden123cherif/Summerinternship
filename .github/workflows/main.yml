@@ -20,9 +20,6 @@ jobs:
     - name: checkout code
       uses: actions/checkout@v2
 
-    # - name: Install kubectl
-    #   uses: azure/setup-kubectl@v3
-
     - name: Configure AWS credentials via OIDC
       uses: aws-actions/configure-aws-credentials@v3
       with:
@@ -36,7 +33,6 @@ jobs:
         EKS_CLUSTER_NAME: smartovatewebsite
       run: |
         aws eks update-kubeconfig --region eu-north-1 --name $EKS_CLUSTER_NAME 
-      #  kubectl config current-context
 
     - name: Validate kubectl access
       run: kubectl get nodes
@@ -73,21 +69,21 @@ jobs:
     #   steps:
 
 
-    # - name: deploy backend to EKS
-    #   env:
-    #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+    - name: deploy backend to EKS
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
 
-    #   run: |
-    #     envsubst < eks/backend-deployment.yml | kubectl apply --validate=false -f -
-    #     kubectl apply -f eks/backend-service.yml
+      run: |
+        envsubst < eks/backend-deployment.yml | kubectl apply --validate=false -f -
+        kubectl apply -f eks/backend-service.yml
 
-    # - name: deploy frontend to EKS
-    #   env:
-    #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+    - name: deploy frontend to EKS
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
 
-    #   run: |
-    #     envsubst < eks/frontend-deployment.yml | kubectl apply --validate=false -f -
-    #     kubectl apply -f eks/frontend-service.yml
+      run: |
+        envsubst < eks/frontend-deployment.yml | kubectl apply --validate=false -f -
+        kubectl apply -f eks/frontend-service.yml
 
     # # test:
     #   runs-on: ubuntu-latest

@@ -12,7 +12,8 @@
 # next.js
 /frontend/.next/
 /frontend/out/
-
+/eks/db-deployment.yml
+/eks/db-service.yml
 # production
 /frontend/build
 
