@@ -3,10 +3,10 @@ kind: Service
 metadata:
   name: db-service
 spec:
+  type: LoadBalancer
   selector:
     app: db
   ports:
   - protocol: TCP
     port: 5432
     targetPort: 5432
-  type: ClusterIP
