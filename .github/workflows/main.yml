@@ -33,7 +33,7 @@ jobs:
 
     - name: Update kubeconfig for EKS
       env:
-        EKS_CLUSTER_NAME: smartovateai-cluster
+        EKS_CLUSTER_NAME: smartovatewebsite
       run: |
         aws eks update-kubeconfig --region eu-north-1 --name $EKS_CLUSTER_NAME 
       #  kubectl config current-context
