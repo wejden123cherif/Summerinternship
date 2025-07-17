@@ -37,7 +37,6 @@ jobs:
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
-
     - name: Build & push frontend image
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -59,10 +58,9 @@ jobs:
         docker tag smartovate-backend:latest $ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:latest
         docker push $ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:latest
         cd ..
-
-  # ----------------------------
-  # DEPLOY JOB
-  # ----------------------------
+    # ----------------------------
+    # DEPLOY JOB
+    # ----------------------------
   deploy:
     name: Deploy to EKS
     needs: build
@@ -95,7 +93,7 @@ jobs:
           --from-literal=POSTGRES_USER="${{ secrets.POSTGRES_USER }}" \
           --from-literal=POSTGRES_DB="${{ secrets.POSTGRES_DB }}" \
           --dry-run=client -o yaml | kubectl apply -f - 
-          
+
         kubectl create secret generic app-secrets \
           --from-literal=SECRET_KEY="${{ secrets.SECRET_KEY }}" \
           --from-literal=DATABASE_URL="postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@postgres-service:5432/${{ secrets.POSTGRES_DB }}" \
