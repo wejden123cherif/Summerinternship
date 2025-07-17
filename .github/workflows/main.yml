@@ -104,6 +104,13 @@ jobs:
           --from-literal=POSTGRES_DB="${{ secrets.POSTGRES_DB }}" \
           --dry-run=client -o yaml | kubectl apply -f - 
 
+    - name: Deploy db to EKS
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+      run: |
+        envsubst < eks/db-deployment.yml | kubectl apply --validate=false -f -
+        kubectl apply -f eks/db-service.yml
+
     - name: Deploy backend to EKS
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
