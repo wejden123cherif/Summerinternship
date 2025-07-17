@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend
+  namespace: smartovatewebsite
 spec:
   replicas: 1
   selector:
@@ -14,16 +15,6 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: 014498640042.dkr.ecr.eu-north-1.amazonaws.com/smartovate-website-frontend:latest
+        image: ${ECR_REGISTRY}/smartovate-website-frontend:latest
         ports:
         - containerPort: 3000
-        env:
-        - name: BACKEND_URL
-          value: "http://backend-service:5000"
-        resources:
-          requests:
-            memory: "256Mi"
-            cpu: "500m"
-          limits:
-            memory: "512Mi"
-            cpu: "1"
