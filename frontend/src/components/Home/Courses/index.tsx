@@ -67,7 +67,7 @@ const Courses = () => {
 
     const [courseData, setCourse] = useState<Course[]>([]);
         useEffect(() => { 
-            fetch('http://${process.env.BACKEND_URL}:5000/get_bestsellers')
+            fetch(`http://${process.env.BACKEND_URL}:5000/get_bestsellers`)
                 .then(response => response.json())
                 .then((data: Course[]) => setCourse(data))
                 .catch(error => console.error('Error fetching course data:', error));

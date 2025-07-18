@@ -40,7 +40,7 @@ type Instructor = {
             useEffect(() => {
   const fetchData = async () => {
     try {
-      const response = await fetch('http://${process.env.BACKEND_URL}:5000/get_certifications');
+      const response = await fetch(`http://${process.env.BACKEND_URL}:5000/get_certifications`);
       const data: Course[] = await response.json();
       setCourse(data);
     } catch (error) {
@@ -101,8 +101,8 @@ const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 
     try {
       const apiUrl = process.env.NODE_ENV === "production"
-        ? "https://www.smartovateai.com/api/create-checkout-session"
-        : "http://${process.env.BACKEND_URL}:5000/api/create-checkout-session";
+        ? `https://www.smartovateai.com/api/create-checkout-session`
+        : `http://${process.env.BACKEND_URL}:5000/api/create-checkout-session`;
       console.log("Fetching checkout session from:", apiUrl);
       const response = await fetch(apiUrl, {
         method: "POST",
