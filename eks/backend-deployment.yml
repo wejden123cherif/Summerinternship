@@ -34,4 +34,4 @@ spec:
               name: postgres-secret
               key: POSTGRES_DB
         - name: DATABASE_URL
-          value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@db-service:5432/$(POSTGRES_DB)"
+          value: "postgresql://postgres:1234@db-service:5432/dbSubul"
