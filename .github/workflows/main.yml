@@ -218,25 +218,25 @@ jobs:
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v2
-    # - name: Build & push frontend image
-    #   env:
-    #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-    #   run: |
-    #     cd frontend
-    #     docker build -t smartovate-frontend:latest .
-    #     docker tag smartovate-frontend:latest $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:latest
-    #     docker push $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:latest
-    #     cd ..
+    - name: Build & push frontend image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+      run: |
+        cd frontend
+        docker build -t smartovate-frontend:latest .
+        docker tag smartovate-frontend:latest $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:latest
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:latest
+        cd ..
 
-    # - name: Build & push backend image
-    #   env:
-    #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-    #   run: |
-    #     cd backend
-    #     docker build -t smartovate-backend:latest .
-    #     docker tag smartovate-backend:latest $ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:latest
-    #     docker push $ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:latest
-    #     cd ..
+    - name: Build & push backend image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+      run: |
+        cd backend
+        docker build -t smartovate-backend:latest .
+        docker tag smartovate-backend:latest $ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:latest
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:latest
+        cd ..
 
   deploy:
     name: Deploy to EKS
@@ -299,13 +299,13 @@ jobs:
         envsubst < eks/backend-deployment.yml | kubectl apply --validate=false -f -        
         kubectl apply -f eks/backend-service.yml
         kubectl rollout status deployment/backend
-    # - name: Deploy frontend to EKS
-    #   env:
-    #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-    #   run: |
-    #     envsubst < eks/frontend-deployment.yml | kubectl apply -f - -n default
-    #     kubectl apply -f eks/frontend-service.yml -n default
-    #     kubectl rollout status deployment/frontend -n default
+    - name: Deploy frontend to EKS
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+      run: |
+        envsubst < eks/frontend-deployment.yml | kubectl apply -f - -n default
+        kubectl apply -f eks/frontend-service.yml -n default
+        kubectl rollout status deployment/frontend -n default
 
   test:
     name: Verify Deployment
