@@ -87,9 +87,14 @@
 #     - name: Validate kubectl access
 #       run: kubectl get nodes
 
+#     - name: Apply Fluent Bit cluster info ConfigMap
+#       run: |
+#         kubectl apply -f eks/fluent-bit-cluster-info.yml
+
 #     - name: Deploy Fluent Bit
 #       run: |
-#         kubectl apply -f https://raw.githubusercontent.com/aws/containers-roadmap/main/preview-programs/fluentbit/fluent-bit.yaml
+#         kubectl apply -f https://raw.githubusercontent.com/aws-samples/amazon-cloudwatch-container-insights/latest/k8s-deployment-manifest-templates/deployment-mode/daemonset/container-insights-monitoring/cloudwatch-namespace.yaml
+#         kubectl apply -f https://raw.githubusercontent.com/aws-samples/amazon-cloudwatch-container-insights/latest/k8s-deployment-manifest-templates/deployment-mode/daemonset/container-insights-monitoring/fluent-bit/fluent-bit.yaml
 
 #     - name: Create Kubernetes Secrets
 #       run: |
@@ -258,6 +263,10 @@ jobs:
         aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name ${{ env.EKS_CLUSTER_NAME }}
         kubectl config current-context
         kubectl get nodes
+
+    - name: Apply Fluent Bit cluster info ConfigMap
+      run: |
+        kubectl apply -f eks/fluent-bit-cluster-info.yml
 
     - name: Deploy Fluent Bit
       run: |
