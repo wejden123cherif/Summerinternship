@@ -193,51 +193,50 @@ permissions:
   contents: read
 
 jobs:
-  # build:
-  #   name: Build & Push Docker Images
-  #   runs-on: ubuntu-latest
-  #   env:
-  #     AWS_REGION: eu-north-1
-  #     ECR_REPOSITORY_FRONTEND: smartovate-website-frontend
-  #     ECR_REPOSITORY_BACKEND: smartovate-website-backend
-  #   steps:
-  #   - name: Checkout code
-  #     uses: actions/checkout@v4
+  build:
+    name: Build & Push Docker Images
+    runs-on: ubuntu-latest
+    env:
+      AWS_REGION: eu-north-1
+      ECR_REPOSITORY_FRONTEND: smartovate-website-frontend
+      ECR_REPOSITORY_BACKEND: smartovate-website-backend
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-  #   - name: Configure AWS credentials via OIDC
-  #     uses: aws-actions/configure-aws-credentials@v4
-  #     with:
-  #       role-to-assume: arn:aws:iam::014498640042:role/OIDC
-  #       aws-region: ${{ env.AWS_REGION }}
-  #       role-session-name: GitHubActionsSession
-  #       audience: sts.amazonaws.com
+    - name: Configure AWS credentials via OIDC
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: arn:aws:iam::014498640042:role/OIDC
+        aws-region: ${{ env.AWS_REGION }}
+        role-session-name: GitHubActionsSession
+        audience: sts.amazonaws.com
 
-  #   - name: Verify AWS credentials
-  #     run: aws sts get-caller-identity
+    - name: Verify AWS credentials
+      run: aws sts get-caller-identity
 
-  #   - name: Login to Amazon ECR
-  #     id: login-ecr
-  #     uses: aws-actions/amazon-ecr-login@v2
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v2
+    # - name: Build & push frontend image
+    #   env:
+    #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+    #   run: |
+    #     cd frontend
+    #     docker build -t smartovate-frontend:latest .
+    #     docker tag smartovate-frontend:latest $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:latest
+    #     docker push $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:latest
+    #     cd ..
 
-  #   - name: Build & push frontend image
-  #     env:
-  #       ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-  #     run: |
-  #       cd frontend
-  #       docker build -t smartovate-frontend:latest .
-  #       docker tag smartovate-frontend:latest $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:latest
-  #       docker push $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:latest
-  #       cd ..
-
-  #   - name: Build & push backend image
-  #     env:
-  #       ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-  #     run: |
-  #       cd backend
-  #       docker build -t smartovate-backend:latest .
-  #       docker tag smartovate-backend:latest $ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:latest
-  #       docker push $ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:latest
-  #       cd ..
+    # - name: Build & push backend image
+    #   env:
+    #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+    #   run: |
+    #     cd backend
+    #     docker build -t smartovate-backend:latest .
+    #     docker tag smartovate-backend:latest $ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:latest
+    #     docker push $ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:latest
+    #     cd ..
 
   deploy:
     name: Deploy to EKS
