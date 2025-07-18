@@ -300,7 +300,7 @@ jobs:
       run: |
         envsubst < eks/backend-deployment.yml | kubectl apply --validate=false -f -        
         kubectl apply -f eks/backend-service.yml
-        kubectl rollout status deployment/backend --timeout=300s
+        kubectl rollout status deployment/backend
 
     - name: Deploy frontend to EKS
       env:
@@ -308,7 +308,7 @@ jobs:
       run: |
         envsubst < eks/frontend-deployment.yml | kubectl apply -f - -n default
         kubectl apply -f eks/frontend-service.yml -n default
-        kubectl rollout status deployment/frontend -n default --timeout=300s
+        kubectl rollout status deployment/frontend -n default
 
   test:
     name: Verify Deployment
