@@ -13,7 +13,7 @@ spec:
         app: backend
     spec:
       containers:
-      - image: 014498640042.dkr.ecr.eu-north-1.amazonaws.com/smartovate-website-backend:latest
+      - image: 014498640042.dkr.ecr.eu-north-1.amazonaws.com/website-backend:latest
         name: backend
         ports:
         - containerPort: 5000

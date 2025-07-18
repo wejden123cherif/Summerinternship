@@ -198,8 +198,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       AWS_REGION: eu-north-1
-      ECR_REPOSITORY_FRONTEND: smartovate-website-frontend
-      ECR_REPOSITORY_BACKEND: smartovate-website-backend
+      ECR_REPOSITORY_FRONTEND: website-frontend
+      ECR_REPOSITORY_BACKEND: website-backend
     steps:
     - name: Checkout code
       uses: actions/checkout@v4

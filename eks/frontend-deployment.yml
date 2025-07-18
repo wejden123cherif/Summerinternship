@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: 014498640042.dkr.ecr.eu-north-1.amazonaws.com/smartovate-website-frontend:latest
+        image: 014498640042.dkr.ecr.eu-north-1.amazonaws.com/website-frontend:latest
         ports:
         - containerPort: 3000
         env:
