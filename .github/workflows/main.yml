@@ -238,76 +238,76 @@ jobs:
     #     docker push $ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:latest
     #     cd ..
 
-  deploy:
-    name: Deploy to EKS
-    needs: build
-    runs-on: ubuntu-latest
-    env:
-      AWS_REGION: eu-north-1
-      EKS_CLUSTER_NAME: smartovatewebsite
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+    # deploy:
+    #   name: Deploy to EKS
+    #   needs: build
+    #   runs-on: ubuntu-latest
+    #   env:
+    #     AWS_REGION: eu-north-1
+    #     EKS_CLUSTER_NAME: smartovatewebsite
+    #   steps:
+    #   - name: Checkout code
+    #     uses: actions/checkout@v4
 
-    - name: Configure AWS credentials via OIDC
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        role-to-assume: arn:aws:iam::014498640042:role/OIDC
-        aws-region: ${{ env.AWS_REGION }}
-        role-session-name: GitHubActionsSession
-        audience: sts.amazonaws.com
+    #   - name: Configure AWS credentials via OIDC
+    #     uses: aws-actions/configure-aws-credentials@v4
+    #     with:
+    #       role-to-assume: arn:aws:iam::014498640042:role/OIDC
+    #       aws-region: ${{ env.AWS_REGION }}
+    #       role-session-name: GitHubActionsSession
+    #       audience: sts.amazonaws.com
 
-    - name: Update kubeconfig
-      run: |
-        aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name ${{ env.EKS_CLUSTER_NAME }}
-        kubectl config current-context
-        kubectl get nodes
+    #   - name: Update kubeconfig
+    #     run: |
+    #       aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name ${{ env.EKS_CLUSTER_NAME }}
+    #       kubectl config current-context
+    #       kubectl get nodes
 
-    - name: Apply Fluent Bit cluster info ConfigMap
-      run: |
-        kubectl apply -f eks/fluent-bit-cluster-info.yml
+    #   - name: Apply Fluent Bit cluster info ConfigMap
+    #     run: |
+    #       kubectl apply -f eks/fluent-bit-cluster-info.yml
 
-    - name: Deploy Fluent Bit
-      run: |
-        kubectl apply -f https://raw.githubusercontent.com/aws-samples/amazon-cloudwatch-container-insights/latest/k8s-deployment-manifest-templates/deployment-mode/daemonset/container-insights-monitoring/cloudwatch-namespace.yaml
-        kubectl apply -f https://raw.githubusercontent.com/aws-samples/amazon-cloudwatch-container-insights/latest/k8s-deployment-manifest-templates/deployment-mode/daemonset/container-insights-monitoring/fluent-bit/fluent-bit.yaml
+    #   - name: Deploy Fluent Bit
+    #     run: |
+    #       kubectl apply -f https://raw.githubusercontent.com/aws-samples/amazon-cloudwatch-container-insights/latest/k8s-deployment-manifest-templates/deployment-mode/daemonset/container-insights-monitoring/cloudwatch-namespace.yaml
+    #       kubectl apply -f https://raw.githubusercontent.com/aws-samples/amazon-cloudwatch-container-insights/latest/k8s-deployment-manifest-templates/deployment-mode/daemonset/container-insights-monitoring/fluent-bit/fluent-bit.yaml
 
-    - name: Create Kubernetes Secrets
-      run: |
-        kubectl create secret generic postgres-secret \
-          --from-literal=POSTGRES_USER="${{ secrets.POSTGRES_USER }}" \
-          --from-literal=POSTGRES_PASSWORD="${{ secrets.POSTGRES_PASSWORD }}" \
-          --from-literal=POSTGRES_DB="${{ secrets.POSTGRES_DB }}" \
-          --dry-run=client -o yaml | kubectl apply -f - -n default
-        kubectl create secret generic app-secrets \
-          --from-literal=DATABASE_URL="postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@db-service:5432/${{ secrets.POSTGRES_DB }}" \
-          --from-literal=AWS_DEFAULT_REGION="${{ env.AWS_REGION }}" \
-          --from-literal=S3_BUCKET_NAME="${{ secrets.S3_BUCKET_NAME }}" \
-          --dry-run=client -o yaml | kubectl apply -f - -n default
+    #   - name: Create Kubernetes Secrets
+    #     run: |
+    #       kubectl create secret generic postgres-secret \
+    #         --from-literal=POSTGRES_USER="${{ secrets.POSTGRES_USER }}" \
+    #         --from-literal=POSTGRES_PASSWORD="${{ secrets.POSTGRES_PASSWORD }}" \
+    #         --from-literal=POSTGRES_DB="${{ secrets.POSTGRES_DB }}" \
+    #         --dry-run=client -o yaml | kubectl apply -f - -n default
+    #       kubectl create secret generic app-secrets \
+    #         --from-literal=DATABASE_URL="postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@db-service:5432/${{ secrets.POSTGRES_DB }}" \
+    #         --from-literal=AWS_DEFAULT_REGION="${{ env.AWS_REGION }}" \
+    #         --from-literal=S3_BUCKET_NAME="${{ secrets.S3_BUCKET_NAME }}" \
+    #         --dry-run=client -o yaml | kubectl apply -f - -n default
 
-    - name: Deploy database to EKS
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-      run: |
-        kubectl apply -f eks/db-deployment.yml 
-        kubectl apply -f eks/db-service.yml
-        kubectl rollout status deployment/postgres --timeout=300s
+    #   - name: Deploy database to EKS
+    #     env:
+    #       ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+    #     run: |
+    #       kubectl apply -f eks/db-deployment.yml 
+    #       kubectl apply -f eks/db-service.yml
+    #       kubectl rollout status deployment/postgres --timeout=300s
 
-    - name: Deploy backend to EKS
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-      run: |
-        envsubst < eks/backend-deployment.yml | kubectl apply --validate=false -f -        
-        kubectl apply -f eks/backend-service.yml
-        kubectl rollout status deployment/backend
+    #   - name: Deploy backend to EKS
+    #     env:
+    #       ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+    #     run: |
+    #       envsubst < eks/backend-deployment.yml | kubectl apply --validate=false -f -        
+    #       kubectl apply -f eks/backend-service.yml
+    #       kubectl rollout status deployment/backend
 
-    - name: Deploy frontend to EKS
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-      run: |
-        envsubst < eks/frontend-deployment.yml | kubectl apply -f - -n default
-        kubectl apply -f eks/frontend-service.yml -n default
-        kubectl rollout status deployment/frontend -n default
+    #   - name: Deploy frontend to EKS
+    #     env:
+    #       ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+    #     run: |
+    #       envsubst < eks/frontend-deployment.yml | kubectl apply -f - -n default
+    #       kubectl apply -f eks/frontend-service.yml -n default
+    #       kubectl rollout status deployment/frontend -n default
 
   test:
     name: Verify Deployment
@@ -338,3 +338,4 @@ jobs:
         echo "Backend URL: http://$(kubectl get svc backend-service -n default -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
         kubectl describe pods -l app=backend
         kubectl logs -l app=backend --previous
+        kubectl logs backend-6b49f5cb56-2j5nd --previous
