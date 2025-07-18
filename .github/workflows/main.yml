@@ -238,17 +238,16 @@ jobs:
     #     docker push $ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:latest
     #     cd ..
 
-    # deploy:
-    #   name: Deploy to EKS
-    #   needs: build
-    #   runs-on: ubuntu-latest
-    #   env:
-    #     AWS_REGION: eu-north-1
-    #     EKS_CLUSTER_NAME: smartovatewebsite
-    #   steps:
-    #   - name: Checkout code
-    #     uses: actions/checkout@v4
-
+  deploy:
+    name: Deploy to EKS
+    needs: build
+    runs-on: ubuntu-latest
+    env:
+      AWS_REGION: eu-north-1
+      EKS_CLUSTER_NAME: smartovatewebsite
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
     #   - name: Configure AWS credentials via OIDC
     #     uses: aws-actions/configure-aws-credentials@v4
     #     with:
