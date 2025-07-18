@@ -18,6 +18,8 @@ spec:
         ports:
         - containerPort: 5000
         env:
+        - name: MAIL_PORT
+          value: "587"
         - name: POSTGRES_USER
           value: postgres
           # valueFrom:
