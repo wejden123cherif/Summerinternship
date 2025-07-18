@@ -102,8 +102,7 @@ spec:
           subPath: pg_hba.conf
       volumes:
       - name: postgres-data
-        persistentVolumeClaim:
-          claimName: postgres-pvc
+        emptyDir: {}
       - name: postgres-config
         configMap:
           name: postgres-config
@@ -117,12 +116,3 @@ data:
   pg_hba.conf: |
     local   all   all   trust
     host    all   all   0.0.0.0/0   trust
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: postgres-pvc
-  namespace: default
-spec:
-  accessModes:
-  - ReadWriteOnce
