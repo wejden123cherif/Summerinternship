@@ -24,7 +24,7 @@
 
 //   useEffect(() => {
 //     if (!initialCourse) {
-//       fetch(`http://backend-service:5000/get_certification/${courseId}`)
+//       fetch(`http://${process.env.BACKEND_URL}:5000/get_certification/${courseId}`)
 //         .then((response) => response.json())
 //         .then((data: Course[]) => setCourse(data))
 //         .catch((error) => console.error("Error fetching course data:", error));
