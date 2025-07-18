@@ -55,12 +55,36 @@ spec:
     spec:
       containers:
       - name: backend
-        image: ${ECR_REGISTRY}/smartovate-website-backend:latest
+        image: 014498640042.dkr.ecr.eu-north-1.amazonaws.com/smartovate-website-backend:latest
         ports:
         - containerPort: 5000
         env:
-        - name: DATABASE_URL
+        - name: POSTGRES_USER
           valueFrom:
             secretKeyRef:
-              name: app-secrets
-              key: DATABASE_URL
+              name: postgres-secret
+              key: POSTGRES_USER
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_PASSWORD
+        - name: POSTGRES_DB
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_DB
+        - name: DATABASE_URL
+          value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres-service:5432/$(POSTGRES_DB)"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 30
+          periodSeconds: 10

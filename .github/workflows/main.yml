@@ -87,6 +87,10 @@
 #     - name: Validate kubectl access
 #       run: kubectl get nodes
 
+#     - name: Deploy Fluent Bit
+#       run: |
+#         kubectl apply -f https://raw.githubusercontent.com/aws/containers-roadmap/main/preview-programs/fluentbit/fluent-bit.yaml
+
 #     - name: Create Kubernetes Secrets
 #       run: |
 #         kubectl create secret generic postgres-secret \
@@ -255,6 +259,10 @@ jobs:
         kubectl config current-context
         kubectl get nodes
 
+    - name: Deploy Fluent Bit
+      run: |
+        kubectl apply -f https://raw.githubusercontent.com/aws/containers-roadmap/main/preview-programs/fluentbit/fluent-bit.yaml
+
     - name: Create Kubernetes Secrets
       run: |
         kubectl create secret generic postgres-secret \
@@ -272,17 +280,17 @@ jobs:
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
       run: |
-        kubectl apply -f eks/db-deployment.yml -n default
-        kubectl apply -f eks/db-service.yml -n default
-        kubectl rollout status deployment/postgres -n default --timeout=300s
+        kubectl apply -f eks/db-deployment.yml 
+        kubectl apply -f eks/db-service.yml
+        kubectl rollout status deployment/postgres --timeout=300s
 
     - name: Deploy backend to EKS
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
       run: |
-        envsubst < eks/backend-deployment.yml | kubectl apply -f - -n default
-        kubectl apply -f eks/backend-service.yml -n default
-        kubectl rollout status deployment/backend -n default --timeout=300s
+        envsubst < eks/backend-deployment.yml | kubectl apply --validate=false -f -        
+        kubectl apply -f eks/backend-service.yml
+        kubectl rollout status deployment/backend --timeout=300s
 
     - name: Deploy frontend to EKS
       env:
