@@ -1,7 +1,68 @@
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: postgres
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: postgres
+#   template:
+#     metadata:
+#       labels:
+#         app: postgres
+#     spec:
+#       containers:
+#       - name: postgres
+#         image: pgvector/pgvector:pg16
+#         ports:
+#         - containerPort: 5432
+#         env:
+#         - name: POSTGRES_USER
+#           valueFrom:
+#             secretKeyRef:
+#               name: postgres-secret
+#               key: POSTGRES_USER
+#         - name: POSTGRES_PASSWORD
+#           valueFrom:
+#             secretKeyRef:
+#               name: postgres-secret
+#               key: POSTGRES_PASSWORD
+#         - name: POSTGRES_DB
+#           valueFrom:
+#             secretKeyRef:
+#               name: postgres-secret
+#               key: POSTGRES_DB
+#         volumeMounts:
+#         - name: postgres-data
+#           mountPath: /var/lib/postgresql/data
+#         - name: postgres-config
+#           mountPath: /etc/postgresql/pg_hba.conf
+#           subPath: pg_hba.conf
+#       volumes:
+#       - name: postgres-data
+#         emptyDir: {}
+#       - name: postgres-config
+#         configMap:
+#           name: postgres-config
+# ---
+
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   name: postgres-config
+# data:
+#   pg_hba.conf: |
+#     local   all   all   trust
+#     host    all   all   0.0.0.0/0   trust
+
+# --------------------------------
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: postgres
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -41,17 +102,27 @@ spec:
           subPath: pg_hba.conf
       volumes:
       - name: postgres-data
-        emptyDir: {}
+        persistentVolumeClaim:
+          claimName: postgres-pvc
       - name: postgres-config
         configMap:
           name: postgres-config
 ---
-
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: postgres-config
+  namespace: default
 data:
   pg_hba.conf: |
     local   all   all   trust
-    host    all   all   0.0.0.0/0   trust  # Temporary for debugging
+    host    all   all   0.0.0.0/0   trust
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+  namespace: default
+spec:
+  accessModes:
+  - ReadWriteOnce

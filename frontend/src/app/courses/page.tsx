@@ -36,7 +36,7 @@ const CertificationsPage = () => {
     const fetchCertifications = async () => {
       try {
         setLoading(true);
-        const response = await fetch('http://localhost:5000/get_certifications');
+        const response = await fetch('http://backend-service:5000/get_certifications');
         if (!response.ok) {
           throw new Error(`خطأ HTTP! الحالة: ${response.status}`);
         }

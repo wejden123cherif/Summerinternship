@@ -38,7 +38,7 @@ const InstructorDetailsPage = ({ params }: instructorDetailsPageProps) => {
             useEffect(() => {
   const fetchData = async () => {
     try {
-      const response = await fetch('http://localhost:5000/get_instructors');
+      const response = await fetch('http://backend-service:5000/get_instructors');
       const data: instructor[] = await response.json();
       setinstructor(data);
     } catch (error) {

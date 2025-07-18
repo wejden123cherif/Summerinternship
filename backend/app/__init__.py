@@ -21,7 +21,7 @@ def create_app():
 
     CORS(app, resources={
         r"/*": {
-            # "origins": ["http://frontend:3000", "https://www.smartovateai.com"],
+            # "origins": ["http://frontend-service:3000", "https://www.smartovateai.com"],
             "origins": ["*"],
             "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
             "allow_headers": ["Content-Type", "Accept", "Authorization"],

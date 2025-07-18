@@ -1,7 +1,48 @@
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: backend
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: backend
+#   template:
+#     metadata:
+#       labels:
+#         app: backend
+#     spec:
+#       containers:
+#       - image: 014498640042.dkr.ecr.eu-north-1.amazonaws.com/smartovate-website-backend:latest
+#         name: backend
+#         ports:
+#         - containerPort: 5000
+#         env:
+#         - name: POSTGRES_USER
+#           valueFrom:
+#             secretKeyRef:
+#               name: postgres-secret
+#               key: POSTGRES_USER
+#         - name: POSTGRES_PASSWORD
+#           valueFrom:
+#             secretKeyRef:
+#               name: postgres-secret
+#               key: POSTGRES_PASSWORD
+#         - name: POSTGRES_DB
+#           valueFrom:
+#             secretKeyRef:
+#               name: postgres-secret
+#               key: POSTGRES_DB
+#         - name: DATABASE_URL
+#           value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres-service:5432/$(POSTGRES_DB)"
+
+# ---------------------------------------
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -13,25 +54,13 @@ spec:
         app: backend
     spec:
       containers:
-      - image: 014498640042.dkr.ecr.eu-north-1.amazonaws.com/smartovate-website-backend:latest
-        name: backend
+      - name: backend
+        image: ${ECR_REGISTRY}/smartovate-website-backend:latest
         ports:
         - containerPort: 5000
         env:
-        - name: POSTGRES_USER
-          valueFrom:
-            secretKeyRef:
-              name: postgres-secret
-              key: POSTGRES_USER
-        - name: POSTGRES_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: postgres-secret
-              key: POSTGRES_PASSWORD
-        - name: POSTGRES_DB
-          valueFrom:
-            secretKeyRef:
-              name: postgres-secret
-              key: POSTGRES_DB
         - name: DATABASE_URL
-          value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres-service:5432/$(POSTGRES_DB)"
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: DATABASE_URL
