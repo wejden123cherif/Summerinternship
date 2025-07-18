@@ -336,3 +336,5 @@ jobs:
         echo "Backend URL: http://$(kubectl get svc backend-service -n default -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
         kubectl describe pods -l app=postgres
         kubectl logs -l app=postgres
+        echo "backend ----------------------"
+        kubectl logs -l app=backend
