@@ -299,6 +299,10 @@ jobs:
         kubectl apply -f eks/db-service.yml
         kubectl rollout status deployment/postgres --timeout=300s
 
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v2
+
     - name: Deploy backend to EKS
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
