@@ -278,7 +278,6 @@ jobs:
           --from-literal=POSTGRES_PASSWORD="${{ secrets.POSTGRES_PASSWORD }}" \
           --from-literal=POSTGRES_DB="${{ secrets.POSTGRES_DB }}" \
           --dry-run=client -o yaml | kubectl apply -f - -n default
-        kubectl delete secret app-secrets
         kubectl create secret generic app-secrets \
           --from-literal=DATABASE_URL="postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@db-service:5432/${{ secrets.POSTGRES_DB }}" \
           --from-literal=AWS_DEFAULT_REGION="${{ env.AWS_REGION }}" \
@@ -286,11 +285,11 @@ jobs:
           --from-literal=MAIL_PORT="${{ secrets.MAIL_PORT}}" \
           --dry-run=client -o yaml | kubectl apply -f - -n default
 
-    # - name: clean up
-    #   run: |
-    #     kubectl delete -f eks/db-deployment.yml
-    #     kubectl delete -f eks/frontend-deployment.yml
-    #     kubectl delete -f eks/backend-deployment.yml
+    - name: clean up
+      run: |
+        kubectl delete -f eks/db-deployment.yml
+        kubectl delete -f eks/frontend-deployment.yml
+        kubectl delete -f eks/backend-deployment.yml
 
     - name: Deploy database to EKS
       env:
