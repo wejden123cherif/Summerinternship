@@ -288,6 +288,7 @@ jobs:
       run: |
         kubectl delete -f eks/db-deployment.yml
         kubectl delete -f eks/frontend-deployment.yml
+        kubectl delete -f eks/backend-deployment.yml
 
     - name: Deploy database to EKS
       env:
