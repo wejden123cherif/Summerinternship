@@ -13,16 +13,11 @@ spec:
         app: backend
     spec:
       containers:
-      - image: ${ECR_REGISTRY}/website-backend:latest
+      - image: $ECR_REGISTRY/website-backend:latest
         name: backend
         ports:
         - containerPort: 5000
         env:
-        - name: MAIL_PORT
-          valueFrom:
-            secretKeyRef:
-              name: app-secrets
-              key: MAIL_PORT
         - name: POSTGRES_USER
           valueFrom:
             secretKeyRef:
@@ -43,3 +38,8 @@ spec:
             secretKeyRef:
               name: app-secrets
               key: DATABASE_URL
+        - name: MAIL_PORT
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: MAIL_PORT

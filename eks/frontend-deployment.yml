@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: ${ECR_REGISTRY}/website-frontend:latest
+        image: $ECR_REGISTRY/website-frontend:latest
         ports:
         - containerPort: 3000
