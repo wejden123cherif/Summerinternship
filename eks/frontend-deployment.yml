@@ -20,4 +20,4 @@ spec:
         env:
         - name: NEXT_PUBLIC_BACKEND_URL
           # value: http://backend-service:5000
-          value: http://ae67fe8ada4fc468383177fe913165c0-209953310.eu-north-1.elb.amazonaws.com:500
+          value: http://ae67fe8ada4fc468383177fe913165c0-209953310.eu-north-1.elb.amazonaws.com:5000
