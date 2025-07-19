@@ -45,6 +45,9 @@ RUN npm install @stripe/stripe-js
 # Copy the rest of the application
 COPY . .
 
+ARG NEXT_PUBLIC_BACKEND_URL
+ENV NEXT_PUBLIC_BACKEND_URL=$NEXT_PUBLIC_BACKEND_URL
+
 # Build the Next.js application
 RUN npm run build
 
