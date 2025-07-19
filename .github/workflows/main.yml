@@ -285,11 +285,11 @@ jobs:
           --from-literal=MAIL_PORT="${{ secrets.MAIL_PORT}}" \
           --dry-run=client -o yaml | kubectl apply -f - -n default
 
-    - name: clean up
-      run: |
-        kubectl delete -f eks/db-deployment.yml
-        kubectl delete -f eks/frontend-deployment.yml
-        kubectl delete -f eks/backend-deployment.yml
+    # - name: clean up
+    #   run: |
+    #     kubectl delete -f eks/db-deployment.yml
+    #     kubectl delete -f eks/frontend-deployment.yml
+    #     kubectl delete -f eks/backend-deployment.yml
 
     - name: Deploy database to EKS
       env:
