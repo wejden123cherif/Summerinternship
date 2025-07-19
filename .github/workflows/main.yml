@@ -282,13 +282,14 @@ jobs:
           --from-literal=DATABASE_URL="postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@db-service:5432/${{ secrets.POSTGRES_DB }}" \
           --from-literal=AWS_DEFAULT_REGION="${{ env.AWS_REGION }}" \
           --from-literal=S3_BUCKET_NAME="${{ secrets.S3_BUCKET_NAME }}" \
+          --from-literal=MAIL_PORT="${{ secrets.MAIL_PORT}}"
           --dry-run=client -o yaml | kubectl apply -f - -n default
 
-    - name: clean up
-      run: |
-        kubectl delete -f eks/db-deployment.yml
-        kubectl delete -f eks/frontend-deployment.yml
-        kubectl delete -f eks/backend-deployment.yml
+    # - name: clean up
+    #   run: |
+    #     kubectl delete -f eks/db-deployment.yml
+    #     kubectl delete -f eks/frontend-deployment.yml
+    #     kubectl delete -f eks/backend-deployment.yml
 
     - name: Deploy database to EKS
       env:
@@ -310,9 +311,9 @@ jobs:
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
       run: |
-        envsubst < eks/frontend-deployment.yml | kubectl apply -f - -n default
-        kubectl apply -f eks/frontend-service.yml -n default
-        kubectl rollout status deployment/frontend -n default
+        envsubst < eks/frontend-deployment.yml | kubectl apply -f -
+        kubectl apply -f eks/frontend-service.yml
+        kubectl rollout status deployment/frontend
 
   test:
     name: Verify Deployment

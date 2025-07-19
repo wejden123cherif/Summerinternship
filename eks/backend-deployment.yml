@@ -13,13 +13,16 @@ spec:
         app: backend
     spec:
       containers:
-      - image: 014498640042.dkr.ecr.eu-north-1.amazonaws.com/website-backend:latest
+      - image: ${ECR_REGISTRY}/website-backend:latest
         name: backend
         ports:
         - containerPort: 5000
         env:
         - name: MAIL_PORT
-          value: "587"
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: MAIL_PORT
         - name: POSTGRES_USER
           valueFrom:
             secretKeyRef:
