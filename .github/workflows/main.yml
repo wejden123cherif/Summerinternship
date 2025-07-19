@@ -284,6 +284,11 @@ jobs:
           --from-literal=S3_BUCKET_NAME="${{ secrets.S3_BUCKET_NAME }}" \
           --dry-run=client -o yaml | kubectl apply -f - -n default
 
+    - name: clean up
+      run: |
+        kubectl delete -f eks/db-deployment.yml
+        kubectl delete -f eks/frontend-deployment.yml
+
     - name: Deploy database to EKS
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
