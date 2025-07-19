@@ -15,7 +15,7 @@ export default function Success() {
 
   const verifyPayment = async (sessionId) => {
     try {
-      const response = await fetch(`http://${process.env.NEXT_PUBLIC_BACKEND_URL}:5000/api/verify-payment`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/verify-payment`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sessionId }),
