@@ -17,9 +17,9 @@ spec:
         image: $ECR_REGISTRY/website-frontend:latest
         ports:
         - containerPort: 3000
-      env:
-      - name: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-        valueFrom:
-          secretKeyRef:
-            name: app-secrets
-            key: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+        env:
+        - name: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
