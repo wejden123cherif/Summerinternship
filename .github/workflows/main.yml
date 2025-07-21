@@ -105,7 +105,7 @@ jobs:
           --from-literal=S3_BUCKET_NAME="${{ secrets.S3_BUCKET_NAME }}" \
           --from-literal=MAIL_PORT="${{ secrets.MAIL_PORT}}" \
           --from-literal=STRIPE_SECRET_KEY="${{ secrets.STRIPE_SECRET_KEY}}"\
-          --from-literal=STRIPE_WEBHOOK_SECRET="${{ secerts.STRIPE_WEBHOOK_SECRET}}"\
+          --from-literal=STRIPE_WEBHOOK_SECRET="${{ secrets.STRIPE_WEBHOOK_SECRET}}"\
           --from-literal=NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}}"\
           --dry-run=client -o yaml | kubectl apply -f - -n default
 
