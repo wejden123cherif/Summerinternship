@@ -40,24 +40,29 @@ jobs:
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v2
-    - name: Build & push frontend image
+
+    - name: test vars
       env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-      run: |
-        cd frontend
-        docker build -t smartovate-frontend:latest --build-arg NEXT_PUBLIC_BACKEND_URL="${{ secrets.NEXT_PUBLIC_BACKEND_URL }}" --build-arg NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}}" .
-        docker tag smartovate-frontend:latest $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:latest
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:latest
-        cd ..
-    - name: Build & push backend image
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-      run: |
-        cd backend
-        docker build -t smartovate-backend:latest .
-        docker tag smartovate-backend:latest $ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:latest
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:latest
-        cd ..
+        STRIPE_KEY: ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
+      run: echo $STRIPE_KEY
+    # - name: Build & push frontend image
+    #   env:
+    #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+    #   run: |
+    #     cd frontend
+    #     docker build -t smartovate-frontend:latest --build-arg NEXT_PUBLIC_BACKEND_URL="${{ secrets.NEXT_PUBLIC_BACKEND_URL }}" --build-arg NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}" .
+    #     docker tag smartovate-frontend:latest $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:latest
+    #     docker push $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:latest
+    #     cd ..
+    # - name: Build & push backend image
+    #   env:
+    #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+    #   run: |
+    #     cd backend
+    #     docker build -t smartovate-backend:latest .
+    #     docker tag smartovate-backend:latest $ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:latest
+    #     docker push $ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:latest
+    #     cd ..
 
   deploy:
     name: Deploy to EKS
