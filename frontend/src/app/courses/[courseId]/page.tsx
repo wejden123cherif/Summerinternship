@@ -84,7 +84,7 @@ const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
   //       ))}
   //     </>
   //   );
-   // };
+  // };
   const handlePurchase = async (course: Course) => {
     console.log("Initiating purchase for course:", course.title);
     if (!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
