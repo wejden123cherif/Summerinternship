@@ -44,7 +44,8 @@ jobs:
     - name: test vars
       env:
         STRIPE_KEY: ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
-      run: echo $STRIPE_KEY
+      run: |
+        echo "STRIPE_KEY length: ${#STRIPE_KEY}"
     # - name: Build & push frontend image
     #   env:
     #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
