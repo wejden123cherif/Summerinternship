@@ -13,7 +13,7 @@ class Config:
     AWS_REGION = os.getenv('AWS_REGION')
     S3_BUCKET_NAME = os.getenv('S3_BUCKET_NAME')
     STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
-    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = os.getenv('NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY')
+    STRIPE_PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLISHABLE_KEY')
     MAIL_SERVER = os.getenv('MAIL_SERVER')
     MAIL_PORT = int(os.getenv('MAIL_PORT'))
     MAIL_USE_TLS = os.getenv('MAIL_USE_TLS', 'True') == 'True'

@@ -55,7 +55,8 @@ jobs:
       run: |
         cd frontend
         docker build -t smartovate-frontend:latest --build-arg NEXT_PUBLIC_BACKEND_URL="${{ secrets.NEXT_PUBLIC_BACKEND_URL }}" \
-        --build-arg NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="$STRIPE_KEY" .
+        --build-arg NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_XXXXXXXXXXXXXXXXXXXXXXXX .
+
         docker tag smartovate-frontend:latest $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:latest
         docker push $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:latest
         cd ..
@@ -117,7 +118,7 @@ jobs:
           --from-literal=MAIL_PORT="${{ secrets.MAIL_PORT}}" \
           --from-literal=STRIPE_SECRET_KEY="${{ secrets.STRIPE_SECRET_KEY}}"\
           --from-literal=STRIPE_WEBHOOK_SECRET="${{ secrets.STRIPE_WEBHOOK_SECRET}}"\
-          --from-literal=NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}}"\
+          --from-literal=STRIPE_PUBLISHABLE_KEY="${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}}"\
           --dry-run=client -o yaml | kubectl apply -f - -n default
 
     - name: Deploy database to EKS
