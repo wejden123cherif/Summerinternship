@@ -85,12 +85,14 @@ const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
   //     </>
   //   );
   // };
-  const STRIPE_PUBLISHABLE_KEY= 'pk_test_51XXXXXXX1234567890abcdef'
+  const STRIPE= 'pk_test_51XXXXXXX1234567890abcdef'
+  console.log(STRIPE)
   const handlePurchase = async (course: Course) => {
     console.log("Initiating purchase for course:", course.title);
-    if (!STRIPE_PUBLISHABLE_KEY) {
+    if (!STRIPE) {
       alert("Stripe غير مُهيأ بشكل صحيح. يرجى التواصل مع الدعم.");
       console.error("STRIPE_PUBLISHABLE_KEY is not set");
+      console.log('stripe key : ',STRIPE)
       return;
     }
      const stripe = await stripePromise;
