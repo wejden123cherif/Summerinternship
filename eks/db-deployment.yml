@@ -75,6 +75,7 @@ spec:
       containers:
       - name: postgres
         image: pgvector/pgvector:pg16
+        imagePullPolicy: Always
         ports:
         - containerPort: 5432
         env:
