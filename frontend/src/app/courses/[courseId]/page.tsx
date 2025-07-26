@@ -55,7 +55,7 @@ type Instructor = {
   const course = courseData.find(c => c.id === Number(courseId));
   
 const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-  ? loadStripe('pk_test_51XXXXXXX1234567890abcdef')
+  ? loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
   : Promise.resolve(null);
 
   if (!course) {
@@ -85,14 +85,15 @@ const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
   //     </>
   //   );
   // };
-  const STRIPE= 'pk_test_51XXXXXXX1234567890abcdef'
-  console.log(STRIPE)
+
   const handlePurchase = async (course: Course) => {
     console.log("Initiating purchase for course:", course.title);
-    if (!STRIPE) {
+    if (!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
       alert("Stripe غير مُهيأ بشكل صحيح. يرجى التواصل مع الدعم.");
+      const stripe= process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+      console.log(stripe)
       console.error("STRIPE_PUBLISHABLE_KEY is not set");
-      console.log('stripe key : ',STRIPE)
+      console.log('stripe key : ',process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
       return;
     }
      const stripe = await stripePromise;

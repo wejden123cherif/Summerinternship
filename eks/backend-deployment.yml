@@ -44,3 +44,8 @@ spec:
             secretKeyRef:
               name: app-secrets
               key: MAIL_PORT
+        - name: STRIPE_PUBLISHABLE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: STRIPE_PUBLISHABLE_KEY

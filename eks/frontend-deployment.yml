@@ -23,4 +23,4 @@ spec:
           valueFrom:
             secretKeyRef:
               name: app-secrets
-              key: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+              key: STRIPE_PUBLISHABLE_KEY
