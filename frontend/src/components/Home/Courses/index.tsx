@@ -76,7 +76,7 @@ const Courses = () => {
     
 
     return (
-        <section id="courses" dir="rtl" className="py-20 bg-gradient-to-b from-gray-50 to-white">
+        <section id="courses" dir="rtl" className="py-20 bg-gradient-to-b from-gray-50 to-white scroll-mt-32">
       <div className="container mx-auto lg:max-w-screen-xl md:max-w-screen-md px-4">
         {/* Static Introductory Content */}
         <div className="text-center mb-12">

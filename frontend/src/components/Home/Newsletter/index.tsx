@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const Newsletter = () => {
     return (
-        <section id='newsletter' dir="rtl"> {/* Added dir="rtl" for Right-to-Left layout */}
+        <section id='newsletter' dir="rtl" className="scroll-mt-16"> {/* Added dir="rtl" for Right-to-Left layout */}
             <div className="container mx-auto lg:max-w-screen-xl md:max-w-screen-md px-4">
                 <div className="grid grid-cols-1 gap-y-10 gap-x-6 md:grid-cols-12 xl:gap-x-8">
                     {/* Blue Background Container */}

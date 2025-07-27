@@ -90,8 +90,6 @@ const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
     console.log("Initiating purchase for course:", course.title);
     if (!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
       alert("Stripe غير مُهيأ بشكل صحيح. يرجى التواصل مع الدعم.");
-      const stripe= process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-      console.log(stripe)
       console.error("STRIPE_PUBLISHABLE_KEY is not set");
       console.log('stripe key : ',process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
       return;

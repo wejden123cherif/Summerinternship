@@ -1,66 +1,62 @@
 "use client";
+
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { HeaderItem } from "../../../../types/menu";
 import { usePathname } from "next/navigation";
 
 const HeaderLink: React.FC<{ item: HeaderItem }> = ({ item }) => {
+  const path = usePathname(); // current route (e.g. "/")
+  const [currentHash, setCurrentHash] = useState("");
+
+  // Handle submenu open/close
   const [submenuOpen, setSubmenuOpen] = useState(false);
-  const path = usePathname(); // current pathname (e.g. "/")
-  const [hash, setHash] = useState(""); // current hash (e.g. "#courses")
 
-  // Track window.location.hash and update on hash changes
+  // Track URL hash changes
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      setHash(window.location.hash);
+    const updateHash = () => {
+      setCurrentHash(window.location.hash || "");
+    };
 
-      const onHashChange = () => setHash(window.location.hash);
-      window.addEventListener("hashchange", onHashChange);
+    updateHash(); // Initialize
+    window.addEventListener("hashchange", updateHash);
 
-      return () => window.removeEventListener("hashchange", onHashChange);
-    }
+    return () => window.removeEventListener("hashchange", updateHash);
   }, []);
 
-  // Helper to normalize paths (remove trailing slash)
+  // Normalize path to avoid trailing slash issues
   const normalizePath = (url: string) => url.replace(/\/$/, "");
 
-  // Split item's href into path and hash parts
   const [itemPath, itemHash] = item.href.split("#");
-  const normalizedItemPath = normalizePath(itemPath);
-
-  // Determine active link:
-  // Active if pathname matches AND
-  //   (item has no hash and current hash is empty)
-  //   OR (item hash matches current hash)
+  const fullItemHash = itemHash ? `#${itemHash}` : "";
   const isActive =
-    normalizePath(path) === normalizedItemPath &&
-    (
-      (!itemHash && !hash) ||
-      (itemHash && `#${itemHash}` === hash)
-    );
+    normalizePath(path) === normalizePath(itemPath) &&
+    currentHash === fullItemHash;
 
-  const handleMouseEnter = () => {
-    if (item.submenu) {
-      setSubmenuOpen(true);
+  const handleClick = () => {
+    // For SPA hash routing, scrolls to section and updates hash manually
+    if (itemHash && typeof window !== "undefined") {
+      const element = document.getElementById(itemHash);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+      setCurrentHash(`#${itemHash}`);
     }
-  };
-
-  const handleMouseLeave = () => {
-    setSubmenuOpen(false);
   };
 
   return (
     <div
       className="relative"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      onMouseEnter={() => item.submenu && setSubmenuOpen(true)}
+      onMouseLeave={() => item.submenu && setSubmenuOpen(false)}
     >
       <Link
         href={item.href}
-        className={`text-xl flex hover:text-black font-bold capitalized relative ${
+        onClick={handleClick}
+        className={`text-xl flex font-bold transition-all duration-200 relative ${
           isActive
             ? "text-black after:absolute after:w-8 after:h-1 after:bg-primary after:rounded-full after:-bottom-1"
-            : "text-grey"
+            : "text-gray-500 hover:text-black"
         }`}
       >
         {item.label}
@@ -70,6 +66,7 @@ const HeaderLink: React.FC<{ item: HeaderItem }> = ({ item }) => {
             width="1.5em"
             height="1.5em"
             viewBox="0 0 24 24"
+            className="ml-1"
           >
             <path
               fill="none"
@@ -84,11 +81,7 @@ const HeaderLink: React.FC<{ item: HeaderItem }> = ({ item }) => {
       </Link>
 
       {submenuOpen && (
-        <div
-          className="absolute py-2 left-0 mt-0.5 w-60 bg-white dark:bg-darklight dark:text-white shadow-lg rounded-lg"
-          data-aos="fade-up"
-          data-aos-duration="500"
-        >
+        <div className="absolute py-2 left-0 mt-0.5 w-60 bg-white dark:bg-darklight dark:text-white shadow-lg rounded-lg z-10">
           {item.submenu?.map((subItem, index) => {
             const isSubItemActive = normalizePath(path) === normalizePath(subItem.href);
             return (
