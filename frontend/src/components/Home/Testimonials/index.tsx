@@ -72,7 +72,7 @@ const Testimonial = () => {
     };
     const [TestimonialData, setFeedback] = useState<Feedback[]>([]);
             useEffect(() => { 
-                fetch('http://backend:5000/get_feedbacks')
+                fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_feedbacks`)
                     .then(response => response.json())
                     .then((data: Feedback[]) => setFeedback(data))
                     .catch(error => console.error('Error fetching feedback data:', error));
@@ -97,9 +97,9 @@ const Testimonial = () => {
                                         <h3 className='text-lg font-medium text-darkbrown pt-4 pb-2'>{items.username}</h3>
                                         <h3 className='text-sm font-normal text-lightgray pb-2'>{items.profession}</h3>
                                     </div>
-                                    <div className="flex">
+                                    {/* <div className="flex">
                                         {renderStars(items.rating)}
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </div>

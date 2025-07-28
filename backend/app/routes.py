@@ -52,13 +52,13 @@ def get_course_route(course_id):
 def get_bestsellers_route():
     return get_bestsellers()
 
-# @bp.route('/get_feedbacks', methods=['GET'])
-# def get_feedbacks_route():
-#     return get_feedbacks()
+@bp.route('/get_feedbacks', methods=['GET'])
+def get_feedbacks_route():
+    return get_feedbacks()
 
-# @bp.route('/add_feedback', methods=['POST'])
-# def add_feedback_route():
-#     return add_feedback()
+@bp.route('/add_feedback', methods=['POST'])
+def add_feedback_route():
+    return add_feedback()
 
 
 @bp.route('/get_instructors', methods=['GET'])
@@ -250,7 +250,7 @@ def test_email():
         msg = Message(
             subject='Test Email from Subul Platform',
             sender=os.getenv('MAIL_USERNAME'),
-            recipients=['zeineb.roihi@esprit.tn']  # Replace with your email
+            recipients=['arijzaidi23@gmail.com']
         )
         msg.body = 'This is a test email from the Subul Platform using Flask-Mail.'
         msg.html = '<h2>Test Email</h2><p>This is a test email from the Subul Platform using Flask-Mail.</p>'
@@ -311,15 +311,21 @@ def submit_report():
     try:
         msg = Message(
             subject=f"📬 New Report: {subject}",
-            recipients=["target_user@outlook.com"],  # Replace with the actual recipient
+            sender="arijzaidi23@gmail.com",
+            recipients=["arijzaidi23@gmail.com"],  # Replace with the actual recipient
             body=f"""
-You have received a new report submission:
+📩 You have received a new report submission.
 
-From: {email}
-Subject: {subject}
-Message:
+━━━━━━━━━━━━━━━━━━━━━━━
+👤 From:    {email}
+📌 Subject: {subject}
+━━━━━━━━━━━━━━━━━━━━━━━
+
+📝 Message:
 {message}
-            """
+
+━━━━━━━━━━━━━━━━━━━━━━━
+"""
         )
         mail.send(msg)
     except Exception as e:

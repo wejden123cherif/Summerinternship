@@ -5,10 +5,12 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_BACKEND_URL: "http://localhost:5000"
+
     image: test_front_smartovate
     environment:
       - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_publishable_key_here
-      - NEXT_PUBLIC_BACKEND_URL= http://backend-service:5000
     ports: 
       - "8000:3000"
     depends_on:
