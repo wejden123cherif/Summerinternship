@@ -23,7 +23,7 @@ services:
     environment:
       - DATABASE_URL=${DATABASE_URL}
       - MAIL_PORT=587
-      - STRIPE_PUBLISHABLE_KEY=your_publishable_key_here
+      - STRIPE_PUBLISHABLE_KEY=your_publishable
     depends_on:
       - db  
   db:
