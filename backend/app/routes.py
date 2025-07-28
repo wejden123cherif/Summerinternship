@@ -10,6 +10,7 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 from sqlalchemy.exc import IntegrityError
 from datetime import datetime
+from app.models import db, Report
 
 from flask import current_app
 
@@ -283,3 +284,52 @@ def verify_payment():
     except Exception as e:
         logger.error(f"Unexpected error in verify-payment: {e}")
         return jsonify({'error': 'Internal server error'}), 500
+# --------------------------------------------------------------
+
+# report api:
+
+@bp.route('/api/report', methods=['POST'])
+def submit_report():
+    from flask_mail import Message
+    from app import mail  # Make sure mail is initialized in run.py and imported here
+
+    data = request.get_json()
+    email = data.get('email')
+    subject = data.get('subject')
+    message = data.get('message')
+
+    # Validate form data
+    if not email or not subject or not message:
+        return jsonify({"error": "Missing fields"}), 400
+
+    # Save report to the database
+    report = Report(email=email, subject=subject, message=message)
+    db.session.add(report)
+    db.session.commit()
+
+    # Send email notification to admin (or specific user)
+    try:
+        msg = Message(
+            subject=f"📬 New Report: {subject}",
+            recipients=["target_user@outlook.com"],  # Replace with the actual recipient
+            body=f"""
+You have received a new report submission:
+
+From: {email}
+Subject: {subject}
+Message:
+{message}
+            """
+        )
+        mail.send(msg)
+    except Exception as e:
+        print("❌ Failed to send email:", e)
+
+    return jsonify({"message": "Report submitted successfully"}), 201
+
+
+@bp.route('/entries')
+def show_entries():
+    entries = Report.query.all()
+    lines = [f"{entry.email} - {entry.subject} - {entry.message}" for entry in entries]
+    return "<br>".join(lines)

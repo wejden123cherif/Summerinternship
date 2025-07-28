@@ -39,3 +39,5 @@ flask-migrate==3.1.0
 flask-cors==3.0.10
 flask-babel==2.0.0
 stripe
+Flask-Mail==0.9.1
+sendgrid==6.12.4

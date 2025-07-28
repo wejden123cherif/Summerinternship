@@ -1,6 +1,37 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
 
 const Newsletter = () => {
+    const [email, setEmail] = useState("");
+    const [subject, setSubject] = useState("");
+    const [message, setMessage] = useState("");
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        try {
+            const response = await fetch("http://localhost:5000/api/report", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email, subject, message }),
+            });
+
+            if (response.ok) {
+                alert("تم الإرسال بنجاح!");
+                setEmail("");
+                setSubject("");
+                setMessage("");
+            } else {
+                alert("حدث خطأ، يرجى المحاولة لاحقًا.");
+            }
+        } catch (error) {
+            console.error("Error submitting form:", error);
+            alert("فشل الاتصال بالخادم. تأكد أن السيرفر يعمل.");
+        }
+    };
     return (
         <section id='newsletter' dir="rtl" className="scroll-mt-16"> {/* Added dir="rtl" for Right-to-Left layout */}
             <div className="container mx-auto lg:max-w-screen-xl md:max-w-screen-md px-4">
@@ -20,12 +51,16 @@ const Newsletter = () => {
                             </h3>
 
                             {/* Form */}
-                            <form className="space-y-5 px-4 md:px-0">
-                                {/* Email Input */}
+                            <form
+                                onSubmit={handleSubmit}
+                                className="space-y-4 md:space-y-5 px-2 md:px-0 max-w-xl mx-auto"
+                            >
                                 <div>
                                     <input
                                         type="email"
                                         name="email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
                                         className="py-3 lg:py-4 text-sm md:text-base w-full px-5 text-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-right placeholder-gray-500"
                                         placeholder="أدخل بريدك الإلكتروني"
                                         autoComplete="email"
@@ -33,11 +68,12 @@ const Newsletter = () => {
                                     />
                                 </div>
 
-                                {/* Subject Input */}
                                 <div>
                                     <input
                                         type="text"
                                         name="subject"
+                                        value={subject}
+                                        onChange={(e) => setSubject(e.target.value)}
                                         className="py-3 lg:py-4 text-sm md:text-base w-full px-5 text-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-right placeholder-gray-500"
                                         placeholder="الموضوع"
                                         autoComplete="off"
@@ -49,6 +85,8 @@ const Newsletter = () => {
                                 <div>
                                     <textarea
                                         name="message"
+                                        value={message}
+                                        onChange={(e) => setMessage(e.target.value)}
                                         className="py-3 lg:py-4 text-sm md:text-base w-full px-5 text-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-y text-right placeholder-gray-500"
                                         placeholder="صف مشكلتك أو اقتراحك هنا..."
                                         required
