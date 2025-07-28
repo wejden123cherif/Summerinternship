@@ -122,6 +122,7 @@ jobs:
     - name: delete existing pods
       run: |
         kubectl delete pods -l app=postgres
+        kubectl delete pods -l app=backend
 
     - name: Deploy database to EKS
       env:
