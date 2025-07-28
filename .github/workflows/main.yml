@@ -121,8 +121,7 @@ jobs:
           --dry-run=client -o yaml | kubectl apply -f - -n default
     - name: delete existing pods
       run: |
-        kubectl delete pods -l app=frontend
-        kubectl delete pods -l app=backend
+        kubectl delete pods -l app=postgres
 
     - name: Deploy database to EKS
       env:
