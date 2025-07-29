@@ -119,10 +119,10 @@ jobs:
           --from-literal=STRIPE_WEBHOOK_SECRET="${{ secrets.STRIPE_WEBHOOK_SECRET}}"\
           --from-literal=STRIPE_PUBLISHABLE_KEY="${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}}"\
           --dry-run=client -o yaml | kubectl apply -f - -n default
-    # - name: delete existing pods
-    #   run: |
-    #     kubectl delete pods -l app=postgres
-    #     kubectl delete pods -l app=backend
+    - name: delete existing pods
+      run: |
+        kubectl delete pods -l app=frontend
+    #        kubectl delete pods -l app=backend
 
     - name: Deploy database to EKS
       env:
