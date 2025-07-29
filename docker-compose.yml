@@ -6,7 +6,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        NEXT_PUBLIC_BACKEND_URL: "https://localhost:5000"
+        NEXT_PUBLIC_BACKEND_URL: "http://localhost:5000"
 
     image: test_front_smartovate
     environment:
