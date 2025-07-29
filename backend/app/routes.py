@@ -101,8 +101,8 @@ def create_checkout_session():
         session = stripe.checkout.Session.create(
             payment_method_types=['card'],
             mode='payment',
-            success_url='http://frontend-service:3000/success?session_id={CHECKOUT_SESSION_ID}',
-            cancel_url='http://frontend-service:3000/cancel',
+            success_url='https://frontend-service:3000/success?session_id={CHECKOUT_SESSION_ID}',
+            cancel_url='https://frontend-service:3000/cancel',
             billing_address_collection='required',
             line_items=[{
                 'price_data': {

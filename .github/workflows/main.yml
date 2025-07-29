@@ -177,5 +177,5 @@ jobs:
       run: |
         kubectl get pods -o wide
         kubectl get services -o wide
-        echo "Frontend URL: http://$(kubectl get svc frontend-service -n default -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
-        echo "Backend URL: http://$(kubectl get svc backend-service -n default -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
+        echo "Frontend URL: https://$(kubectl get svc frontend-service -n default -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
+        echo "Backend URL: https://$(kubectl get svc backend-service -n default -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
