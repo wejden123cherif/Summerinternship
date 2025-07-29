@@ -5,9 +5,11 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { TruestedCompanies } from "../../../app/api/data";
+import { useTranslation } from 'react-i18next';
 
 // CAROUSEL SETTINGS
 const Companies = () => {
+    const { t, i18n } = useTranslation();
 
     const settings = {
         dots: false,
@@ -55,12 +57,12 @@ const Companies = () => {
     };
 
     return (
-        <section id='companies' className='text-center scroll-mt-64' dir="rtl"> {/* Added dir="rtl" for the overall section */}
+        <section id='companies' className='text-center scroll-mt-64' dir={i18n.language === 'ar' ? 'rtl' : 'ltr'}>
             <div className="container mx-auto lg:max-w-screen-xl md:max-w-screen-md px-4">
-                {/* Translated headline to Arabic and aligned right for RTL context */}
-                <h2 className="text-midnight_text text-2xl font-semibold text-right mx-auto max-w-lg">
-                    موثوق بنا من قبل شركات بجميع الأحجام
-                </h2> {/* Arabic for "Trusted by companies of all sizes" */}
+                {/* Translated headline */}
+                <h2 className={`text-midnight_text text-2xl font-semibold mx-auto max-w-lg ${i18n.language === 'ar' ? 'text-right' : 'text-left'}`}>
+                    {t('companies.trustedBy')}
+                </h2>
                 <div className="py-14 border-b ">
                     <Slider {...settings}>
                         {TruestedCompanies.map((item, i) =>

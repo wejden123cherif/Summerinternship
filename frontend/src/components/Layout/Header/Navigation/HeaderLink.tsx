@@ -33,14 +33,17 @@ const HeaderLink: React.FC<{ item: HeaderItem }> = ({ item }) => {
     normalizePath(path) === normalizePath(itemPath) &&
     currentHash === fullItemHash;
 
-  const handleClick = () => {
-    // For SPA hash routing, scrolls to section and updates hash manually
-    if (itemHash && typeof window !== "undefined") {
+  const handleClick = (e: React.MouseEvent) => {
+    // For hash links, prevent default and handle smooth scrolling
+    if (itemHash) {
+      e.preventDefault();
       const element = document.getElementById(itemHash);
       if (element) {
         element.scrollIntoView({ behavior: "smooth" });
+        // Update URL hash without page reload
+        window.history.pushState(null, '', `#${itemHash}`);
+        setCurrentHash(`#${itemHash}`);
       }
-      setCurrentHash(`#${itemHash}`);
     }
   };
 

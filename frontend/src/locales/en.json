@@ -1,0 +1,62 @@
+{
+  "nav": {
+    "home": "Home",
+    "courses": "Courses",
+    "partners": "Partners",
+    "testimonials": "Testimonials",
+    "support": "Support"
+  },
+  "footer": {
+    "links": "Links",
+    "other": "Other",
+    "aboutUs": "About Us",
+    "ourTeam": "Our Team",
+    "jobs": "Jobs",
+    "services": "Services",
+    "contactUs": "Contact Us",
+    "privacyPolicy": "Privacy Policy",
+    "terms": "Terms & Conditions",
+    "copyright": "@2025 Agency. All rights reserved to"
+  },
+  "hero": {
+    "companyDescription": "Smartovate is a leading company providing AI and cloud solutions to support transport, health, and tourism in the Gulf.",
+    "headline": "Develop your programming skills with us.",
+    "subheadline": "Smartovate offers smart and cloud solutions to support transport, health, and tourism in the Gulf.",
+    "searchPlaceholder": "Search for courses...",
+    "flexibility": "Flexibility",
+    "learningPath": "Learning Path",
+    "community": "Community"
+  },
+  "courses": {
+    "mostPopular": "Most Popular Courses",
+    "intro": "Discover our collection of courses designed to enhance your professional skills and achieve your educational goals. Each course offers practical content and a recognized certificate to support your career.",
+    "lessons": "Lessons",
+    "students": "Student",
+    "bestSeller": "Best Seller",
+    "readyToUpgrade": "Are you ready to upgrade your skills? Browse our complete collection of courses and start your educational journey today!",
+    "exploreAllCourses": "Explore All Courses"
+  },
+  "newsletter": {
+    "title": "Report a problem.",
+    "subtitle": "If you encounter any issues or have suggestions, please fill out the form below.",
+    "emailPlaceholder": "Enter your email",
+    "subjectPlaceholder": "Subject",
+    "messagePlaceholder": "Describe your problem or suggestion here...",
+    "submitButton": "Send"
+  },
+  "companies": {
+    "trustedBy": "Trusted by companies of all sizes"
+  },
+  "testimonials": {
+    "title": "What Our Students Say",
+    "subtitle": "Real feedback from our community"
+  },
+  "volunteer": {
+    "title": "Become a Volunteer",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscelit. Nam malesu dolor sit amet, consectetur adipiscelit.",
+    "button": "Donate now"
+  },
+  "address": {
+    "street": "925 Filbert Street Pennsylvania 18072"
+  }
+} 

@@ -9,10 +9,13 @@ import HeaderLink from "../Header/Navigation/HeaderLink";
 import MobileHeaderLink from "../Header/Navigation/MobileHeaderLink";
 import { useTheme } from "next-themes";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import LanguageSwitcher from "./LanguageSwitcher";
+import { useTranslation } from 'react-i18next';
 
 const Header: React.FC = () => {
   const pathUrl = usePathname();
   const { theme, setTheme } = useTheme();
+  const { t } = useTranslation();
 
   const [navbarOpen, setNavbarOpen] = useState(false);
   const [sticky, setSticky] = useState(false);
@@ -72,9 +75,13 @@ const Header: React.FC = () => {
           {/* Logo - This will appear on the right in RTL due to flex justify-between */}
           <Logo />
           <nav className="hidden lg:flex flex-grow items-center gap-8 justify-center">
-            {headerData.map((item, index) => (
-              <HeaderLink key={index} item={item} />
-            ))}
+            {/* Use HeaderLink components with translated labels */}
+            <HeaderLink item={{ label: t('nav.home'), href: "/" }} />
+            <HeaderLink item={{ label: t('nav.courses'), href: "/#courses" }} />
+            <HeaderLink item={{ label: t('nav.partners'), href: "/#companies" }} />
+            <HeaderLink item={{ label: t('nav.testimonials'), href: "/#testimonial" }} />
+            <HeaderLink item={{ label: t('nav.support'), href: "/#newsletter" }} />
+            <LanguageSwitcher />
           </nav>
 
           {/* Auth Buttons / Theme Switcher / Mobile Menu Toggle */}
@@ -118,9 +125,11 @@ const Header: React.FC = () => {
             ></button>
           </div>
           <nav className="flex flex-col items-end p-4"> {/* items-end for RTL list alignment */}
-            {headerData.map((item, index) => (
-              <MobileHeaderLink key={index} item={item} />
-            ))}
+            <MobileHeaderLink item={{ label: t('nav.home'), href: "/" }} />
+            <MobileHeaderLink item={{ label: t('nav.courses'), href: "/#courses" }} />
+            <MobileHeaderLink item={{ label: t('nav.partners'), href: "/#companies" }} />
+            <MobileHeaderLink item={{ label: t('nav.testimonials'), href: "/#testimonial" }} />
+            <MobileHeaderLink item={{ label: t('nav.support'), href: "/#newsletter" }} />
           </nav>
         </div>
       </div>
