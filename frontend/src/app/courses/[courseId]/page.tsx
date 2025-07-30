@@ -61,7 +61,7 @@ const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
   if (!course) {
     return (
       // Increased padding here for the "not found" message as well
-      <div className="container mx-auto px-4 pt-24 pb-12 text-center" dir="rtl">
+      <div className="container mx-auto px-4 pt-24 pb-12 text-center scroll-mt-32" dir="rtl">
         <h1 className="text-4xl font-bold text-red-600">عذرًا، لم يتم العثور على الدورة المطلوبة.</h1>
         <p className="mt-4 text-lg text-gray-700">الرجاء التحقق من الرابط والمحاولة مرة أخرى.</p>
       </div>
