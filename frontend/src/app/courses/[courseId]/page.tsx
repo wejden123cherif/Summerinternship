@@ -85,9 +85,11 @@ const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
   //     </>
   //   );
   // };
+const [isLoading, setIsLoading] = useState(false);
 
   const handlePurchase = async (course: Course) => {
     console.log("Initiating purchase for course:", course.title);
+    setIsLoading(true);
     if (!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
       alert("Stripe غير مُهيأ بشكل صحيح. يرجى التواصل مع الدعم.");
       console.error("STRIPE_PUBLISHABLE_KEY is not set");
@@ -103,8 +105,8 @@ const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 
     try {
       const apiUrl = process.env.NODE_ENV === "production"
-        ? `https://app.smartovate.com/api/create-checkout-session`
-        : `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/create-checkout-session`;
+        ? `https://app.smartovate.com/create-checkout-session`
+        : `${process.env.NEXT_PUBLIC_BACKEND_URL}/create-checkout-session`;
       console.log("Fetching checkout session from:", apiUrl);
       const response = await fetch(apiUrl, {
         method: "POST",
@@ -134,7 +136,9 @@ const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
     } catch (error) {
       console.error("Purchase error:", error);
       alert("حدث خطأ أثناء بدء الدفع. يرجى المحاولة لاحقًا.");
-    }
+    }finally {
+    setIsLoading(false);
+  }
   };
 
   return (
@@ -203,7 +207,11 @@ const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
               <div className="flex flex-wrap gap-4">
                 <button
                       onClick={() => handlePurchase(course)}
-                      className="bg-blue-900 text-white text-xl font-semibold px-10 py-4 rounded-xl hover:bg-blue-800 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">                      
+                      disabled={isLoading}
+                      className={`bg-blue-900 text-white text-xl font-semibold px-10 py-4 rounded-xl transition-all duration-300 ${
+                        isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-800 hover:shadow-xl hover:-translate-y-1"
+                      }`}>      
+                        {isLoading ? "جارٍ المعالجة..." : "سجل الآن في الدورة"}                
                        سجل الآن في الدورة
                     </button>
               </div>
