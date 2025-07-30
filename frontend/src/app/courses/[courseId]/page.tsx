@@ -103,7 +103,7 @@ const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 
     try {
       const apiUrl = process.env.NODE_ENV === "production"
-        ? `https://www.smartovate.com/api/create-checkout-session`
+        ? `https://app.smartovate.com/api/create-checkout-session`
         : `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/create-checkout-session`;
       console.log("Fetching checkout session from:", apiUrl);
       const response = await fetch(apiUrl, {
