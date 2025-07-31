@@ -46,18 +46,18 @@ jobs:
         STRIPE_KEY: ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
       run: |
         echo "STRIPE_KEY length: ${#STRIPE_KEY}"
-    # - name: Build & push frontend image
-    #   env:
-    #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-    #     STRIPE_KEY: ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
+    - name: Build & push frontend image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        STRIPE_KEY: ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
 
-    #   run: |
-    #     cd frontend
-    #     docker build --no-cache -t smartovate-frontend:latest --build-arg NEXT_PUBLIC_BACKEND_URL="${{ secrets.NEXT_PUBLIC_BACKEND_URL }}" \
-    #     --build-arg NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="$STRIPE_KEY" .
-    #     docker tag smartovate-frontend:latest $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:latest
-    #     docker push $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:latest
-    #     cd ..
+      run: |
+        cd frontend
+        docker build --no-cache -t smartovate-frontend:latest --build-arg NEXT_PUBLIC_BACKEND_URL="${{ secrets.NEXT_PUBLIC_BACKEND_URL }}" \
+        --build-arg NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="$STRIPE_KEY" .
+        docker tag smartovate-frontend:latest $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:latest
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:latest
+        cd ..
 
     - name: Build & push backend image
       env:
@@ -75,7 +75,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       AWS_REGION: eu-north-1
-      EKS_CLUSTER_NAME: smartovatewebsite
+      # EKS_CLUSTER_NAME: smartovatewebsite
+      EKS_CLUSTER_NAME: smarttest
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -118,11 +120,11 @@ jobs:
           --from-literal=STRIPE_WEBHOOK_SECRET="${{ secrets.STRIPE_WEBHOOK_SECRET}}"\
           --from-literal=STRIPE_PUBLISHABLE_KEY="${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}}"\
           --dry-run=client -o yaml | kubectl apply -f - -n default
-    - name: delete existing pods
-      run: |
-        kubectl delete pods -l app=frontend
-        kubectl delete pods -l app=backend
-        kubectl delete pods -l app=postgres
+    # - name: delete existing pods
+    #   run: |
+    #     kubectl delete pods -l app=frontend
+    #     kubectl delete pods -l app=backend
+    #     kubectl delete pods -l app=postgres
 
     - name: Deploy database to EKS
       env:
@@ -158,7 +160,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       AWS_REGION: eu-north-1
-      EKS_CLUSTER_NAME: smartovatewebsite
+      # EKS_CLUSTER_NAME: smartovatewebsite
+      EKS_CLUSTER_NAME: smarttest
     steps:
     - name: Configure AWS credentials via OIDC
       uses: aws-actions/configure-aws-credentials@v4
