@@ -295,54 +295,54 @@ def verify_payment():
 
 # report api:
 
-@bp.route('/api/report', methods=['POST'])
-def submit_report():
-    from flask_mail import Message
-    from app import mail  # Make sure mail is initialized in run.py and imported here
+# @bp.route('/api/report', methods=['POST'])
+# def submit_report():
+#     from flask_mail import Message
+#     from app import mail  # Make sure mail is initialized in run.py and imported here
 
-    data = request.get_json()
-    email = data.get('email')
-    subject = data.get('subject')
-    message = data.get('message')
+#     data = request.get_json()
+#     email = data.get('email')
+#     subject = data.get('subject')
+#     message = data.get('message')
 
-    # Validate form data
-    if not email or not subject or not message:
-        return jsonify({"error": "Missing fields"}), 400
+#     # Validate form data
+#     if not email or not subject or not message:
+#         return jsonify({"error": "Missing fields"}), 400
 
-    # Save report to the database
-    report = Report(email=email, subject=subject, message=message)
-    db.session.add(report)
-    db.session.commit()
+#     # Save report to the database
+#     report = Report(email=email, subject=subject, message=message)
+#     db.session.add(report)
+#     db.session.commit()
 
-    # Send email notification to admin (or specific user)
-    try:
-        msg = Message(
-            subject=f"📬 New Report: {subject}",
-            sender="arijzaidi23@gmail.com",
-            recipients=["arijzaidi23@gmail.com"],  # Replace with the actual recipient
-            body=f"""
-📩 You have received a new report submission.
+#     # Send email notification to admin (or specific user)
+#     try:
+#         msg = Message(
+#             subject=f"📬 New Report: {subject}",
+#             sender="arijzaidi23@gmail.com",
+#             recipients=["arijzaidi23@gmail.com"],  # Replace with the actual recipient
+#             body=f"""
+# 📩 You have received a new report submission.
 
-━━━━━━━━━━━━━━━━━━━━━━━
-👤 From:    {email}
-📌 Subject: {subject}
-━━━━━━━━━━━━━━━━━━━━━━━
+# ━━━━━━━━━━━━━━━━━━━━━━━
+# 👤 From:    {email}
+# 📌 Subject: {subject}
+# ━━━━━━━━━━━━━━━━━━━━━━━
 
-📝 Message:
-{message}
+# 📝 Message:
+# {message}
 
-━━━━━━━━━━━━━━━━━━━━━━━
-"""
-        )
-        mail.send(msg)
-    except Exception as e:
-        print("❌ Failed to send email:", e)
+# ━━━━━━━━━━━━━━━━━━━━━━━
+# """
+#         )
+#         mail.send(msg)
+#     except Exception as e:
+#         print("❌ Failed to send email:", e)
 
-    return jsonify({"message": "Report submitted successfully"}), 201
+#     return jsonify({"message": "Report submitted successfully"}), 201
 
 
-@bp.route('/entries')
-def show_entries():
-    entries = Report.query.all()
-    lines = [f"{entry.email} - {entry.subject} - {entry.message}" for entry in entries]
-    return "<br>".join(lines)
+# @bp.route('/entries')
+# def show_entries():
+#     entries = Report.query.all()
+#     lines = [f"{entry.email} - {entry.subject} - {entry.message}" for entry in entries]
+#     return "<br>".join(lines)
