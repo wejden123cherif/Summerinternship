@@ -9,7 +9,7 @@ from flask_mail import Mail, Message
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 from sqlalchemy.exc import IntegrityError
-from datetime import datetime
+import time
 from app.models import db, Report
 
 from flask import current_app
@@ -30,7 +30,14 @@ def index():
 
 @bp.route('/get_certifications', methods=['GET'])
 def get_certifications_route():
-    return get_certifications()
+    start_time = time.time()
+    data = get_certifications()
+    duration = time.time() - start_time
+    print(f"/get_certifications took {duration:.3f} seconds")
+    # Optionally, include latency info in the response headers:
+    response = jsonify(data)
+    response.headers['X-Response-Time'] = f"{duration:.3f}s"
+    return response
 
 @bp.route('/add_certification', methods=['POST'])
 def add_certifications_route():

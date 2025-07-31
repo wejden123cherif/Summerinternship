@@ -1,3 +1,4 @@
+import time
 from .models import Certification, Feedback, Instructor, User
 from . import db
 from flask import request, jsonify
@@ -72,7 +73,10 @@ def add_certifications():
 
 
 def get_certifications():
+    start_time = time.time()
     certifications = Certification.query.all()
+    duration = time.time() - start_time
+    print(f"database took {duration:.3f} seconds")
     result = []
     for cert in certifications:
         result.append({
@@ -92,6 +96,8 @@ def get_certifications():
             "description":cert.description,
             "level":cert.level
         })
+    duration = time.time() - start_time
+    print(f"for loop took {duration:.3f} seconds")
     return result
 
 
