@@ -1,3 +1,4 @@
+import logging
 import os
 from flask import Flask, render_template
 # from flask_mail import Mail, Message
@@ -14,10 +15,12 @@ app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
 # app.config['MAIL_PASSWORD'] = 'arij11649778'  # Use App Password for Gmail
 # app.config['MAIL_DEFAULT_SENDER'] = 'arijzaidi23@gmail.com'
 
+
 # mail = Mail(app)
 @app.route('/')
 def index():
     return render_template('index.html')
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=5000,timeout=120)
+    app.logger.setLevel(logging.DEBUG)
 

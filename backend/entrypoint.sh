@@ -14,4 +14,4 @@ fi
 flask db migrate -m "Auto migration" || echo "No changes detected"
 flask db upgrade
 
-exec gunicorn --bind 0.0.0.0:5000 "app:create_app()"
+exec gunicorn --bind 0.0.0.0:5000 "app:create_app()" --timeout 120
