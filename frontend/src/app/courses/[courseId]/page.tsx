@@ -225,7 +225,7 @@ const [isLoading, setIsLoading] = useState(false);
         <h3 className="text-3xl font-bold text-gray-900 mb-6 text-center">ما هي هذه الشهادة؟</h3>
         <p className="text-gray-600 text-lg max-w-3xl mx-auto leading-relaxed">
           هذه الشهادة هي برنامج تعليمي شامل يهدف إلى تزويدك بالمهارات الأساسية والمتقدمة في مجالك. من خلال منهج دراسي مدروس ومحتوى عملي، ستتمكن من إتقان المفاهيم الأساسية وتطبيقها بثقة في بيئة العمل.
-        {course.description}
+        {(course.description as any)?.ar ?? "لا يوجد وصف متاح"}
         </p>
       </div>
 

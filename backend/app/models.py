@@ -58,7 +58,7 @@ class Instructor(db.Model):
 
 class Certification(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    description = db.Column(db.Text, nullable=False)  # Added description
+    description = db.Column(db.String, nullable=False)  # Added description
     title = db.Column(db.String(128), nullable=False) #title
     #quizzes = db.relationship('Quiz', backref='certification', lazy=True)
     instructor_id = db.Column(db.Integer, db.ForeignKey('instructor.id'), nullable=False)
