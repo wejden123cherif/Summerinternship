@@ -9,68 +9,68 @@ import { FaUserCircle } from "react-icons/fa";
 
 const Testimonial = () => {
 
-    type Feedback = {
-        id: number;
-        user_id: number;
-        comment: string;
-        username: string;
-        profession: string;
-        rating: number;
-    };
-    const settings = {
-        dots: true,
-        dotsClass: "slick-dots",
-        infinite: true,
-        slidesToShow: 3,
-        slidesToScroll: 2,
-        arrows: false,
-        autoplay: true,
-        cssEase: "linear",
-        responsive: [
-            {
-                breakpoint: 1200,
-                settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 1,
-                    infinite: true,
-                    dots: false
-                }
-            },
-            {
-                breakpoint: 800,
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 1,
-                    infinite: true,
-                    dots: false
-                }
-            },
-            {
-                breakpoint: 600,
-                settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 1,
-                    infinite: true,
-                    dots: false
-                }
-            }
-        ]
-    };
+    // type Feedback = {
+    //     id: number;
+    //     user_id: number;
+    //     comment: string;
+    //     username: string;
+    //     profession: string;
+    //     rating: number;
+    // };
+    // const settings = {
+    //     dots: true,
+    //     dotsClass: "slick-dots",
+    //     infinite: true,
+    //     slidesToShow: 3,
+    //     slidesToScroll: 2,
+    //     arrows: false,
+    //     autoplay: true,
+    //     cssEase: "linear",
+    //     responsive: [
+    //         {
+    //             breakpoint: 1200,
+    //             settings: {
+    //                 slidesToShow: 3,
+    //                 slidesToScroll: 1,
+    //                 infinite: true,
+    //                 dots: false
+    //             }
+    //         },
+    //         {
+    //             breakpoint: 800,
+    //             settings: {
+    //                 slidesToShow: 2,
+    //                 slidesToScroll: 1,
+    //                 infinite: true,
+    //                 dots: false
+    //             }
+    //         },
+    //         {
+    //             breakpoint: 600,
+    //             settings: {
+    //                 slidesToShow: 1,
+    //                 slidesToScroll: 1,
+    //                 infinite: true,
+    //                 dots: false
+    //             }
+    //         }
+    //     ]
+    // };
 
-    const renderStars = (rating: number) => {
-        const fullStars = Math.floor(rating);
-        const halfStars = rating % 1 >= 0.5 ? 1 : 0;
-        const emptyStars = 5 - fullStars - halfStars;
+    // const renderStars = (rating: number) => {
+    //     const fullStars = Math.floor(rating);
+    //     const halfStars = rating % 1 >= 0.5 ? 1 : 0;
+    //     const emptyStars = 5 - fullStars - halfStars;
 
-        return (
-            <>
-                {Array(fullStars).fill(<Icon icon="tabler:star-filled" className="text-yellow-500 text-xl inline-block" />)}
-                {halfStars > 0 && <Icon icon="tabler:star-half-filled" className="text-yellow-500 text-xl inline-block" />}
-                {Array(emptyStars).fill(<Icon icon="tabler:star-filled" className="text-gray-400 text-xl inline-block" />)}
-            </>
-        );
-    };
-    // const [TestimonialData, setFeedback] = useState<Feedback[]>([]);
+    //     return (
+    //         <>
+    //             {Array(fullStars).fill(<Icon icon="tabler:star-filled" className="text-yellow-500 text-xl inline-block" />)}
+    //             {halfStars > 0 && <Icon icon="tabler:star-half-filled" className="text-yellow-500 text-xl inline-block" />}
+    //             {Array(emptyStars).fill(<Icon icon="tabler:star-filled" className="text-gray-400 text-xl inline-block" />)}
+    //         </>
+    //     );
+    // };
+    // // const [TestimonialData, setFeedback] = useState<Feedback[]>([]);
     //         useEffect(() => { 
     //             fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_feedbacks`)
     //                 .then(response => response.json())
