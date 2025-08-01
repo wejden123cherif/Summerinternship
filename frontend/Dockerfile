@@ -42,7 +42,6 @@ COPY package*.json ./
 RUN npm install
 RUN npm install @stripe/stripe-js
 
-# Copy the rest of the application
 COPY . .
 
 ARG NEXT_PUBLIC_BACKEND_URL
