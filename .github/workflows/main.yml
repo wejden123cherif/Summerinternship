@@ -155,6 +155,7 @@ jobs:
 
     - name: Deploy ingress controller to EKS
       run: |
+        kubectl apply -f eks/ingress-class.yml
         kubectl apply -f eks/alb-ingress.yml
 
   test:
@@ -187,4 +188,6 @@ jobs:
         echo "Backend URL: http://$(kubectl get svc backend-service -n default -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
     - name: verify ingress controller config
       run: |
+        kubectl get ingressclass
         kubectl get ingress app-ingress
+        kubectl describe ingress app-ingress
