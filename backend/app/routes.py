@@ -28,7 +28,7 @@ CORS(bp)
 def index():
     return "Welcome to the Certification Portal"
 
-@bp.route('/get_certifications', methods=['GET'])
+@bp.route('/api/get_certifications', methods=['GET'])
 def get_certifications_route():
     start_time = time.time()
     data = get_certifications()
@@ -55,7 +55,7 @@ def update_certification_route(cert_id):
 def get_course_route(course_id):
     return get_course(course_id)
 
-@bp.route('/get_bestsellers', methods=['GET'])
+@bp.route('/api/get_bestsellers', methods=['GET'])
 def get_bestsellers_route():
     return get_bestsellers()
 

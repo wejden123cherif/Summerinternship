@@ -5,7 +5,7 @@ on:
     branches:
     - main
     - dev
-    - nerminA
+    - test-ingress
   pull_request:
     branches:
     - main
@@ -122,28 +122,28 @@ jobs:
     - name: delete existing pods
       run: |
         kubectl delete pods -l app=frontend
-    #     kubectl delete pods -l app=backend
-    #     kubectl delete pods -l app=postgres
+        kubectl delete pods -l app=backend
+        kubectl delete pods -l app=postgres
 
-    # - name: Deploy database to EKS
-    #   env:
-    #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-    #   run: |
-    #     kubectl apply -f eks/db-deployment.yml 
-    #     kubectl apply -f eks/db-service.yml
-    #     kubectl rollout status deployment/postgres --timeout=300s
+    - name: Deploy database to EKS
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+      run: |
+        kubectl apply -f eks/db-deployment.yml 
+        kubectl apply -f eks/db-service.yml
+        kubectl rollout status deployment/postgres --timeout=300s
 
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v2
 
-    # - name: Deploy backend to EKS
-    #   env:
-    #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-    #   run: |
-    #     envsubst < eks/backend-deployment.yml | kubectl apply --validate=false -f -        
-    #     kubectl apply -f eks/backend-service.yml
-    #     kubectl rollout status deployment/backend
+    - name: Deploy backend to EKS
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+      run: |
+        envsubst < eks/backend-deployment.yml | kubectl apply --validate=false -f -        
+        kubectl apply -f eks/backend-service.yml
+        kubectl rollout status deployment/backend
 
     - name: Deploy frontend to EKS
       env:
@@ -152,6 +152,10 @@ jobs:
         envsubst < eks/frontend-deployment.yml | kubectl apply -f -
         kubectl apply -f eks/frontend-service.yml
         kubectl rollout status deployment/frontend
+
+    - name: Deploy ingress controller to EKS
+      run: |
+        kubectl apply -f eks/alb-ingress.yml
 
   test:
     name: Verify Deployment
@@ -181,3 +185,6 @@ jobs:
         kubectl get services -o wide
         echo "Frontend URL: http://$(kubectl get svc frontend-service -n default -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
         echo "Backend URL: http://$(kubectl get svc backend-service -n default -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
+    - name: verify ingress controller config
+      run: |
+        kubectl get ingress app-ingress

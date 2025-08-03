@@ -40,7 +40,8 @@ type Instructor = {
             useEffect(() => {
   const fetchData = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_certifications`);
+      // const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_certifications`);
+      const response = await fetch(`/api/get_certifications`);
       const data: Course[] = await response.json();
       setCourse(data);
     } catch (error) {
