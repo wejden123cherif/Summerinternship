@@ -29,7 +29,6 @@ class User(db.Model, UserMixin):
     password_hash = db.Column(db.String(256), nullable=False)
     is_admin = db.Column(db.Boolean, default=False, nullable=False)
     certifications = db.relationship('Certification', secondary=user_certifications, backref='users')
-    feedbacks = db.relationship("Feedback", backref="user", lazy=True)
     profession = db.Column(db.String(100), nullable=True)  # Added profession field
 
 
@@ -41,7 +40,8 @@ class User(db.Model, UserMixin):
 #password wlaet password-hash 
 class Feedback(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    username = db.Column(db.String(256), nullable=False)
+    userimage = db.Column(db.String(256),nullable=True)
     comment = db.Column(db.Text, nullable=False)
     
 #password wlaet password-hash 

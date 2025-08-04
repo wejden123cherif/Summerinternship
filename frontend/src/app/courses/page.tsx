@@ -36,7 +36,7 @@ const CertificationsPage = () => {
     const fetchCertifications = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_certifications`);
+        const response = await fetch(`/api/get_certifications`);
         if (!response.ok) {
           throw new Error(`خطأ HTTP! الحالة: ${response.status}`);
         }

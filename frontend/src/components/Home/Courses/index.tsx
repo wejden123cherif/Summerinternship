@@ -69,7 +69,6 @@ const Courses = () => {
 
     const [courseData, setCourse] = useState<Course[]>([]);
         useEffect(() => { 
-            // fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_bestsellers`)
             fetch(`/api/get_bestsellers`)
                 .then(response => response.json())
                 .then((data: Course[]) => setCourse(data))

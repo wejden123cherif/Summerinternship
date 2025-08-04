@@ -40,7 +40,6 @@ type Instructor = {
             useEffect(() => {
   const fetchData = async () => {
     try {
-      // const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_certifications`);
       const response = await fetch(`/api/get_certifications`);
       const data: Course[] = await response.json();
       setCourse(data);
@@ -69,23 +68,6 @@ const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
     );
   }
 
-  // const renderStars = (rating: number) => {
-  //   const fullStars = Math.floor(rating);
-  //   const halfStars = rating % 1 >= 0.5 ? 1 : 0;
-  //   const emptyStars = 5 - fullStars - halfStars;
-
-  //   return (
-  //     <>
-  //       {Array.from({ length: fullStars }).map((_, idx) => (
-  //         <Icon key={`full-${idx}`} icon="tabler:star-filled" className="text-yellow-500 text-xl inline-block" />
-  //       ))}
-  //       {halfStars > 0 && <Icon icon="tabler:star-half-filled" className="text-yellow-500 text-xl inline-block" />}
-  //       {Array.from({ length: emptyStars }).map((_, idx) => (
-  //         <Icon key={`empty-${idx}`} icon="tabler:star-filled" className="text-gray-400 text-xl inline-block" />
-  //       ))}
-  //     </>
-  //   );
-  // };
 const [isLoading, setIsLoading] = useState(false);
 
   const handlePurchase = async (course: Course) => {
@@ -105,9 +87,7 @@ const [isLoading, setIsLoading] = useState(false);
     }
 
     try {
-      const apiUrl = process.env.NODE_ENV === "production"
-        ? `https://app.smartovate.com/create-checkout-session`
-        : `${process.env.NEXT_PUBLIC_BACKEND_URL}/create-checkout-session`;
+      const apiUrl = `/api/create-checkout-session`;
       console.log("Fetching checkout session from:", apiUrl);
       const response = await fetch(apiUrl, {
         method: "POST",

@@ -4,18 +4,15 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { Icon } from "@iconify/react/dist/iconify.js";
 import { FaUserCircle } from "react-icons/fa";
 
 const Testimonial = () => {
 
     type Feedback = {
         id: number;
-        user_id: number;
         comment: string;
         username: string;
-        profession: string;
-        rating: number;
+        userimage: string;
     };
     const settings = {
         dots: true,
@@ -57,22 +54,10 @@ const Testimonial = () => {
         ]
     };
 
-    const renderStars = (rating: number) => {
-        const fullStars = Math.floor(rating);
-        const halfStars = rating % 1 >= 0.5 ? 1 : 0;
-        const emptyStars = 5 - fullStars - halfStars;
-
-        return (
-            <>
-                {Array(fullStars).fill(<Icon icon="tabler:star-filled" className="text-yellow-500 text-xl inline-block" />)}
-                {halfStars > 0 && <Icon icon="tabler:star-half-filled" className="text-yellow-500 text-xl inline-block" />}
-                {Array(emptyStars).fill(<Icon icon="tabler:star-filled" className="text-gray-400 text-xl inline-block" />)}
-            </>
-        );
-    };
+    
     const [TestimonialData, setFeedback] = useState<Feedback[]>([]);
             useEffect(() => { 
-                fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_feedbacks`)
+                fetch(`/api/get_feedbacks`)
                     .then(response => response.json())
                     .then((data: Feedback[]) => setFeedback(data))
                     .catch(error => console.error('Error fetching feedback data:', error));
@@ -90,16 +75,13 @@ const Testimonial = () => {
                             <div className={`bg-white rounded-2xl m-4 p-5 my-20 relative ${i % 2 ? 'shadow-testimonial-shadow2' : 'shadow-testimonial-shadow1'}`}>
                                 <div className="absolute top-[-45px]">
                                     <FaUserCircle className="w-10 h-10 text-gray-400" />
+                                    <Image src={items.userimage} alt={items.username} width={100} height={100} className="inline-block" />
                                 </div>
                                 <h4 className='text-base font-normal text-darkgray my-4'>{items.comment}</h4>
                                 <div className="flex justify-between items-center">
                                     <div>
                                         <h3 className='text-lg font-medium text-darkbrown pt-4 pb-2'>{items.username}</h3>
-                                        <h3 className='text-sm font-normal text-lightgray pb-2'>{items.profession}</h3>
                                     </div>
-                                    {/* <div className="flex">
-                                        {renderStars(items.rating)}
-                                    </div> */}
                                 </div>
                             </div>
                         </div>

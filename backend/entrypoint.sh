@@ -11,6 +11,8 @@ echo "Creating and applying migrations..."
 if [ ! -d "migrations" ]; then
   flask db init
 fi
+
+
 flask db migrate -m "Auto migration" || echo "No changes detected"
 flask db upgrade
 
