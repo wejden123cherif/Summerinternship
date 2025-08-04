@@ -9,11 +9,25 @@ const MobileHeaderLink: React.FC<{ item: HeaderItem }> = ({ item }) => {
     setSubmenuOpen(!submenuOpen);
   };
 
+  const handleClick = (e: React.MouseEvent) => {
+    // For hash links, prevent default and handle smooth scrolling
+    const [itemPath, itemHash] = item.href.split("#");
+    if (itemHash) {
+      e.preventDefault();
+      const element = document.getElementById(itemHash);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+        // Update URL hash without page reload
+        window.history.pushState(null, '', `#${itemHash}`);
+      }
+    }
+  };
+
   return (
     <div className="relative w-full">
       <Link
         href={item.href}
-        onClick={item.submenu ? handleToggle : undefined}
+        onClick={item.submenu ? handleToggle : handleClick}
         className="flex items-center justify-between w-full py-2 text-muted focus:outline-none"
       >
         {item.label}

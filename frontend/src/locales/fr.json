@@ -1,0 +1,62 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "courses": "Cours",
+    "partners": "Partenaires",
+    "testimonials": "Témoignages",
+    "support": "Support"
+  },
+  "footer": {
+    "links": "Liens",
+    "other": "Autre",
+    "aboutUs": "À propos de nous",
+    "ourTeam": "Notre équipe",
+    "jobs": "Emplois",
+    "services": "Services",
+    "contactUs": "Contactez-nous",
+    "privacyPolicy": "Politique de confidentialité",
+    "terms": "Conditions générales",
+    "copyright": "@2025 Agence. Tous droits réservés à"
+  },
+  "hero": {
+    "companyDescription": "Smartovate est une entreprise leader fournissant des solutions d'IA et de cloud pour soutenir le transport, la santé et le tourisme dans le Golfe.",
+    "headline": "Développez vos compétences en programmation avec nous.",
+    "subheadline": "Smartovate propose des solutions cloud et intelligentes pour soutenir le transport, la santé et le tourisme dans le Golfe.",
+    "searchPlaceholder": "Rechercher des cours...",
+    "flexibility": "Flexibilité",
+    "learningPath": "Parcours d'apprentissage",
+    "community": "Communauté"
+  },
+  "courses": {
+    "mostPopular": "Cours les plus populaires",
+    "intro": "Découvrez notre collection de cours conçus pour améliorer vos compétences professionnelles et atteindre vos objectifs éducatifs. Chaque cours offre un contenu pratique et un certificat reconnu pour soutenir votre carrière.",
+    "lessons": "Leçons",
+    "students": "Étudiant",
+    "bestSeller": "Meilleur vendeur",
+    "readyToUpgrade": "Êtes-vous prêt à améliorer vos compétences ? Parcourez notre collection complète de cours et commencez votre parcours éducatif aujourd'hui !",
+    "exploreAllCourses": "Explorer tous les cours"
+  },
+  "newsletter": {
+    "title": "Signaler un problème.",
+    "subtitle": "Si vous rencontrez des problèmes ou avez des suggestions, veuillez remplir le formulaire ci-dessous.",
+    "emailPlaceholder": "Entrez votre email",
+    "subjectPlaceholder": "Sujet",
+    "messagePlaceholder": "Décrivez votre problème ou suggestion ici...",
+    "submitButton": "Envoyer"
+  },
+  "companies": {
+    "trustedBy": "Fait confiance par des entreprises de toutes tailles"
+  },
+  "testimonials": {
+    "title": "Ce que disent nos étudiants",
+    "subtitle": "Vrais retours de notre communauté"
+  },
+  "volunteer": {
+    "title": "Devenez Bénévole",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscelit. Nam malesu dolor sit amet, consectetur adipiscelit.",
+    "button": "Faire un don"
+  },
+  "address": {
+    "street": "925 Rue Filbert Pennsylvanie 18072"
+  }
+} 

@@ -6,8 +6,10 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { useTranslation } from 'react-i18next';
 
 const Courses = () => {
+    const { t, i18n } = useTranslation();
     type Course = {
         id: number;
         image_url: string;
@@ -77,15 +79,15 @@ const Courses = () => {
     
 
     return (
-        <section id="courses" dir="rtl" className="py-20 bg-gradient-to-b from-gray-50 to-white scroll-mt-32">
+        <section id="courses" dir={i18n.language === 'ar' ? 'rtl' : 'ltr'} className="py-20 bg-gradient-to-b from-gray-50 to-white scroll-mt-32">
       <div className="container mx-auto lg:max-w-screen-xl md:max-w-screen-md px-4">
         {/* Static Introductory Content */}
         <div className="text-center mb-12">
           <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4 animate-fade-in">
-            الدورات الأكثر شهرة
+            {t('courses.mostPopular')}
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed animate-fade-in delay-100">
-            اكتشف مجموعتنا من الدورات المصممة لتعزيز مهاراتك المهنية وتحقيق أهدافك التعليمية. كل دورة تقدم محتوى عمليًا وشهادة معترف بها لدعم مسيرتك المهنية.
+            {t('courses.intro')}
           </p>
         </div>
 
@@ -106,7 +108,7 @@ const Courses = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                   <div className="absolute right-4 bottom-4 bg-teal-500 rounded-full px-6 py-2">
                     <span className="text-white text-sm font-semibold uppercase">
-                      الأكثر مبيعًا
+                      {t('courses.bestSeller')}
                     </span>
                   </div>
                 </div>
@@ -130,11 +132,11 @@ const Courses = () => {
                   <div className="grid grid-cols-3 gap-4">
                     <div className="flex items-center gap-2">
                       <Icon icon="solar:notebook-minimalistic-outline" className="text-blue-700 text-xl" />
-                      <span className="text-sm font-medium text-gray-700">{items.sessions_nbre} دروس</span>
+                      <span className="text-sm font-medium text-gray-700">{items.sessions_nbre} {t('courses.lessons')}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Icon icon="solar:users-group-rounded-linear" className="text-blue-700 text-xl" />
-                      <span className="text-sm font-medium text-gray-700">{items.student_count} طالب</span>
+                      <span className="text-sm font-medium text-gray-700">{items.student_count} {t('courses.students')}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Icon icon="solar:star-linear" className="text-blue-700 text-xl" />
@@ -150,13 +152,13 @@ const Courses = () => {
         {/* Static CTA Section */}
         <div className="text-center mt-12">
           <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-6 animate-fade-in delay-200">
-            هل أنت مستعد للارتقاء بمهاراتك؟ تصفح مجموعتنا الكاملة من الدورات وابدأ رحلتك التعليمية اليوم!
+            {t('courses.readyToUpgrade')}
           </p>
           <Link
             href="/courses"
             className="inline-block bg-blue-700 text-white text-lg font-semibold px-8 py-3 rounded-xl hover:bg-blue-600 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
           >
-            استكشف جميع الدورات
+            {t('courses.exploreAllCourses')}
           </Link>
         </div>
       </div>

@@ -1,0 +1,161 @@
+.languageSwitcher {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .languageButton {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
+    color: #222;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 14px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  
+  .languageButton:hover {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: #6366f1;
+    color: #111;
+    transform: translateY(-1px);
+  }
+  
+  .languageButton:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #6366f180;
+  }
+  
+  .globeIcon {
+    color: rgba(255, 255, 255, 0.8);
+  }
+  
+  .currentLanguage {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .flag {
+    font-size: 16px;
+  }
+  
+  .languageName {
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  
+  .chevron {
+    transition: transform 0.2s ease;
+    color: rgba(255, 255, 255, 0.7);
+  }
+  
+  .chevronOpen {
+    transform: rotate(180deg);
+  }
+  
+  .dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 4px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.10);
+    overflow: hidden;
+    z-index: 1000;
+    min-width: 160px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(10px);
+  }
+  
+  .languageOption {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 12px 16px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-size: 14px;
+    color: #222;
+    text-align: left;
+  }
+  
+  .languageOption:hover {
+    background-color: rgba(99, 102, 241, 0.08);
+  }
+  
+  .languageOption.active {
+    background-color: rgba(99, 102, 241, 0.15);
+    color: #222;
+    font-weight: 600;
+  }
+  
+  .languageOption.active:hover {
+    background-color: rgba(99, 102, 241, 0.18);
+  }
+  
+  .checkmark {
+    margin-left: auto;
+    color: #10b981;
+    font-weight: bold;
+  }
+  
+  .languageName, .flag, .globeIcon, .chevron {
+    color: #222 !important;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .languageButton {
+      padding: 6px 10px;
+      font-size: 13px;
+    }
+    
+    .languageName {
+      display: none;
+    }
+    
+    .dropdown {
+      right: 0;
+      min-width: 140px;
+    }
+    
+    .languageOption {
+      padding: 10px 12px;
+      font-size: 13px;
+    }
+  }
+  
+  /* Dark mode support */
+  @media (prefers-color-scheme: dark) {
+    .dropdown {
+      background: rgba(255, 255, 255, 0.8);
+      border-color: rgba(0, 0, 0, 0.08);
+    }
+    
+    .languageOption {
+      color: #222;
+    }
+    
+    .languageOption:hover {
+      background-color: rgba(99, 102, 241, 0.08);
+    }
+    
+    .languageOption.active {
+      background-color: rgba(99, 102, 241, 0.15);
+      color: #222;
+    }
+    
+    .languageOption.active:hover {
+      background-color: rgba(99, 102, 241, 0.18);
+    }
+  } 

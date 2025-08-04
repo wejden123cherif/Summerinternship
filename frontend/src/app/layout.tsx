@@ -1,10 +1,10 @@
 import { Poppins } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Layout/Header";
-import Footer from "@/components/Layout/Footer";
+import Header from "../components/Layout/Header";
+import Footer from "../components/Layout/Footer";
 import { ThemeProvider } from "next-themes";
-import ScrollToTop from "@/components/ScrollToTop";
-import { html } from "framer-motion/client";
+import ScrollToTop from "../components/ScrollToTop";
+import I18nProvider from "../components/I18nProvider";
 const font = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700"], });
 
 export default function RootLayout({
@@ -13,19 +13,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ar" dir="rtl" suppressHydrationWarning>
+    <html lang="en" dir="ltr" suppressHydrationWarning>
       <body className={`${font.className}`}>
         <ThemeProvider
           attribute="class"
           enableSystem={true}
           defaultTheme="light"
         >
-          <Header />
-          {children}
-          <Footer />
-          <ScrollToTop />
+          <I18nProvider>
+            <Header />
+            {children}
+            <Footer />
+            <ScrollToTop />
+          </I18nProvider>
         </ThemeProvider>
       </body>
     </html>
-  ); // Added missing closing parenthesis for return statement
+  );
 }
