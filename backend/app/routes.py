@@ -25,7 +25,9 @@ logger = logging.getLogger(__name__)
 def index():
     return "Welcome to the Certification Portal"
 
-
+@bp.route('/api/health', methods=['GET'])
+def health_check():
+    return "OK", 200
 
 # -----------------------------------------------
 # certification api:

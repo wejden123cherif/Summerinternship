@@ -7,13 +7,14 @@ metadata:
   annotations:
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:eu-west-1:309316407602:certificate/169c5c91-9227-457e-a9ac-72779c31a107
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
-    alb.ingress.kubernetes.io/ssl-redirect: "443"
+    # alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:eu-west-1:309316407602:certificate/169c5c91-9227-457e-a9ac-72779c31a107
+    # alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
+    # alb.ingress.kubernetes.io/ssl-redirect: "443"
 spec:
   ingressClassName: alb
   rules:
-  - host: www.smartovate.com
+  # - host: www.smartovate.com
+  - host: k8s-default-appingre-139730eb3d-481215077.eu-north-1.elb.amazonaws.com
     http:
       paths:
       - path: /api
