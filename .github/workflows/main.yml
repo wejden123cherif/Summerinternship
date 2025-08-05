@@ -46,27 +46,27 @@ jobs:
         STRIPE_KEY: ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
       run: |
         echo "STRIPE_KEY length: ${#STRIPE_KEY}"
-    - name: Build & push frontend image
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        STRIPE_KEY: ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
+    # - name: Build & push frontend image
+    #   env:
+    #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+    #     STRIPE_KEY: ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
 
-      run: |
-        cd frontend
-        docker build --no-cache -t smartovate-frontend:latest \
-        --build-arg NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="$STRIPE_KEY" .
-        docker tag smartovate-frontend:latest $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:latest
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:latest
-        cd ..
-    - name: Build & push backend image
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-      run: |
-        cd backend
-        docker build -t smartovate-backend:latest .
-        docker tag smartovate-backend:latest $ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:latest
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:latest
-        cd ..
+    #   run: |
+    #     cd frontend
+    #     docker build --no-cache -t smartovate-frontend:latest \
+    #     --build-arg NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="$STRIPE_KEY" .
+    #     docker tag smartovate-frontend:latest $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:latest
+    #     docker push $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:latest
+    #     cd ..
+    # - name: Build & push backend image
+    #   env:
+    #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+    #   run: |
+    #     cd backend
+    #     docker build -t smartovate-backend:latest .
+    #     docker tag smartovate-backend:latest $ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:latest
+    #     docker push $ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:latest
+    #     cd ..
 
   deploy:
     name: Deploy to EKS
