@@ -36,12 +36,12 @@ type Instructor = {
         certifications: Course[];
     };
 
-    const [courseData, setCourse] = useState<Course[]>([]);
+    const [course, setCourse] = useState<Course>();
             useEffect(() => {
   const fetchData = async () => {
     try {
-      const response = await fetch(`/api/get_certifications`);
-      const data: Course[] = await response.json();
+      const response = await fetch(`http://localhost:5000/api/get_certification/${courseId}`);
+      const data: Course = await response.json();
       setCourse(data);
     } catch (error) {
       console.error('Error fetching course data:', error);
@@ -52,7 +52,6 @@ type Instructor = {
 }, []);
 
 
-  const course = courseData.find(c => c.id === Number(courseId));
   
 const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
   ? loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)

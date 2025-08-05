@@ -108,20 +108,26 @@ def get_certifications():
 
 
 def get_certification_by_id(cert_id):
-    certification = Certification.query.get(cert_id)
-    if not certification:
+    cert = Certification.query.get(cert_id)
+    if not cert:
         return format_response({"error": "Certification not found"}, status=404)
 
     return {
-        "id": certification.id,
-        "title": certification.title,
-        "price": certification.price,
-        "instructor_name": certification.instructor.name if certification.instructor else None,
-        "sessions_nbre": certification.sessions_nbre,
-        "image_url": certification.image_url,
-        "student_count": certification.student_count,
-        "description":certification.description,
-        "level":certification.level
+        "id": cert.id,
+            "title": cert.title,
+            "price": cert.price,
+            "instructor": {
+                "id": cert.instructor.id,
+                "name": cert.instructor.name,
+                "bio": cert.instructor.bio,
+                "specialization": cert.instructor.specialization,
+                "email": cert.instructor.email,
+                },
+            "sessions_nbre": cert.sessions_nbre,
+            "image_url": cert.image_url,
+            "student_count": cert.student_count,
+            "description":cert.description,
+            "level":cert.level
 
     }   
 

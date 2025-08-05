@@ -9,7 +9,7 @@ from app.models import db, Report
 from flask import current_app
 from flask_cors import CORS
 import boto3
-from app.services import add_certifications, add_feedback, create_checkout_session , get_certifications , delete_certification, get_course, get_feedbacks, get_instructors, show_entries, stripe_webhook, submit_report, test_email, update_certification, get_bestsellers, verify_payment
+from app.services import add_certifications, add_feedback, create_checkout_session, get_certification_by_id , get_certifications , delete_certification, get_course, get_feedbacks, get_instructors, show_entries, stripe_webhook, submit_report, test_email, update_certification, get_bestsellers, verify_payment
 from secrets import token_hex
 
 
@@ -55,7 +55,7 @@ def update_certification_route(cert_id):
 
 @bp.route("/api/get_certification/<int:course_id>", methods=["GET"])
 def get_course_route(course_id):
-    return get_course(course_id)
+    return get_certification_by_id(course_id)
 
 @bp.route('/api/get_bestsellers', methods=['GET'])
 def get_bestsellers_route():
