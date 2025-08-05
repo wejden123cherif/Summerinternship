@@ -1,28 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { HeaderItem } from "../../../../types/menu";
 import { usePathname } from "next/navigation";
 
 const HeaderLink: React.FC<{ item: HeaderItem }> = ({ item }) => {
-  const path = usePathname(); // current route (e.g. "/")
-  const [currentHash, setCurrentHash] = useState("");
-
-  // Handle submenu open/close
+  const path = usePathname(); // Current route (e.g. "/")
   const [submenuOpen, setSubmenuOpen] = useState(false);
-
-  // Track URL hash changes
-  useEffect(() => {
-    const updateHash = () => {
-      setCurrentHash(window.location.hash || "");
-    };
-
-    updateHash(); // Initialize
-    window.addEventListener("hashchange", updateHash);
-
-    return () => window.removeEventListener("hashchange", updateHash);
-  }, []);
 
   // Normalize path to avoid trailing slash issues
   const normalizePath = (url: string) => url.replace(/\/$/, "");
@@ -31,18 +16,15 @@ const HeaderLink: React.FC<{ item: HeaderItem }> = ({ item }) => {
   const fullItemHash = itemHash ? `#${itemHash}` : "";
   const isActive =
     normalizePath(path) === normalizePath(itemPath) &&
-    currentHash === fullItemHash;
+    window.location.hash === fullItemHash;
 
   const handleClick = (e: React.MouseEvent) => {
-    // For hash links, prevent default and handle smooth scrolling
     if (itemHash) {
       e.preventDefault();
       const element = document.getElementById(itemHash);
       if (element) {
         element.scrollIntoView({ behavior: "smooth" });
-        // Update URL hash without page reload
-        window.history.pushState(null, '', `#${itemHash}`);
-        setCurrentHash(`#${itemHash}`);
+        window.history.pushState(null, "", `#${itemHash}`);
       }
     }
   };

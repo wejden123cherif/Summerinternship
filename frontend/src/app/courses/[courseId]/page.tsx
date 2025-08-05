@@ -35,29 +35,23 @@ type Instructor = {
         email: string;
         certifications: Course[];
     };
-
+    const [isLoading, setIsLoading] = useState(false);
     const [course, setCourse] = useState<Course>();
-            useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const response = await fetch(`http://localhost:5000/api/get_certification/${courseId}`);
-      const data: Course = await response.json();
-      setCourse(data);
-    } catch (error) {
-      console.error('Error fetching course data:', error);
-    }
-  };
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await fetch(`/api/get_certification/${courseId}`);
+          const data: Course = await response.json();
+          setCourse(data);
+        } catch (error) {
+          console.error('Error fetching course data:', error);
+        }
+      };
 
   fetchData();
 }, []);
 
-
-  
-const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-  ? loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
-  : Promise.resolve(null);
-
-  if (!course) {
+if (!course) {
     return (
       // Increased padding here for the "not found" message as well
       <div className="container mx-auto px-4 pt-24 pb-12 text-center scroll-mt-32" dir="rtl">
@@ -66,8 +60,11 @@ const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
       </div>
     );
   }
+  
+const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+  ? loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
+  : Promise.resolve(null);
 
-const [isLoading, setIsLoading] = useState(false);
 
   const handlePurchase = async (course: Course) => {
     console.log("Initiating purchase for course:", course.title);
@@ -191,7 +188,7 @@ const [isLoading, setIsLoading] = useState(false);
                       className={`bg-blue-900 text-white text-xl font-semibold px-10 py-4 rounded-xl transition-all duration-300 ${
                         isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-800 hover:shadow-xl hover:-translate-y-1"
                       }`}>      
-                        {isLoading ? "جارٍ المعالجة..." : "سجل الآن في الدورة"}                
+                        {isLoading ? "جارٍ المعالجة..." : ""}                
                        سجل الآن في الدورة
                     </button>
               </div>
