@@ -6,25 +6,31 @@ import { HeaderItem } from "../../../../types/menu";
 import { usePathname } from "next/navigation";
 
 const HeaderLink: React.FC<{ item: HeaderItem }> = ({ item }) => {
-  const path = usePathname(); // Current route (e.g. "/")
+  const path = usePathname();
   const [submenuOpen, setSubmenuOpen] = useState(false);
 
-  // Normalize path to avoid trailing slash issues
   const normalizePath = (url: string) => url.replace(/\/$/, "");
 
   const [itemPath, itemHash] = item.href.split("#");
   const fullItemHash = itemHash ? `#${itemHash}` : "";
+
+  // Only check hash if on client (avoids "window is not defined" on build)
+  const currentHash =
+    typeof window !== "undefined" ? window.location.hash : "";
+
   const isActive =
     normalizePath(path) === normalizePath(itemPath) &&
-    window.location.hash === fullItemHash;
+    currentHash === fullItemHash;
 
   const handleClick = (e: React.MouseEvent) => {
     if (itemHash) {
       e.preventDefault();
-      const element = document.getElementById(itemHash);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
-        window.history.pushState(null, "", `#${itemHash}`);
+      if (typeof window !== "undefined") {
+        const element = document.getElementById(itemHash);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+          window.history.pushState(null, "", `#${itemHash}`);
+        }
       }
     }
   };
@@ -68,7 +74,8 @@ const HeaderLink: React.FC<{ item: HeaderItem }> = ({ item }) => {
       {submenuOpen && (
         <div className="absolute py-2 left-0 mt-0.5 w-60 bg-white dark:bg-darklight dark:text-white shadow-lg rounded-lg z-10">
           {item.submenu?.map((subItem, index) => {
-            const isSubItemActive = normalizePath(path) === normalizePath(subItem.href);
+            const isSubItemActive =
+              normalizePath(path) === normalizePath(subItem.href);
             return (
               <Link
                 key={index}
