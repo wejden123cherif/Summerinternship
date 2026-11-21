@@ -2,22 +2,18 @@ name: CICD-smartovateai-website
 
 on:
   push:
-    branches:
-    - main
-    - dev
-    - test-ingress
-  pull_request:
-    branches:
-    - main
+    branches: [main]
 
 permissions:
-  id-token: write
   contents: read
 
 jobs:
   build:
     name: Build & Push Docker Images
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     env:
       AWS_REGION: eu-north-1
       ECR_REPOSITORY_FRONTEND: website-frontend
@@ -71,7 +67,12 @@ jobs:
   deploy:
     name: Deploy to EKS
     needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    environment: production
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     env:
       AWS_REGION: eu-north-1
       # EKS_CLUSTER_NAME: smartovatewebsite
@@ -162,6 +163,9 @@ jobs:
     name: Verify Deployment
     needs: deploy
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     env:
       AWS_REGION: eu-north-1
       # EKS_CLUSTER_NAME: smartovatewebsite

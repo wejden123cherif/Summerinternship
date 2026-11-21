@@ -1,0 +1,22 @@
+name: Pull Request Validation
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  container-build:
+    name: Build application containers
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Build frontend image
+        run: docker build --file frontend/Dockerfile --tag smartovate-frontend:pr ./frontend
+
+      - name: Build backend image
+        run: docker build --file backend/dockerfile --tag smartovate-backend:pr ./backend
