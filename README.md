@@ -1,8 +1,8 @@
 # Smartovate AI Website
 
-Smartovate is a web platform for presenting professional certification courses, instructors, and course details. This repository contains a Next.js frontend, a Flask REST API, PostgreSQL data models, and Docker/Kubernetes deployment configuration. It was developed by a wider team; my contribution is described separately below.
+Smartovate is a web platform for presenting professional certification courses, instructors, and course details. This repository contains a Next.js frontend, a Flask REST API, PostgreSQL data models, and Docker/Kubernetes deployment configuration. It was developed by a wider team; my individual contribution is summarized below.
 
-> **Project status:** The repository documents an AWS EKS deployment workflow, but the checked-in workflow refers to PostgreSQL Kubernetes manifests that are not present in this checkout. The README therefore describes the intended deployment path and does not claim a currently reproducible or live production deployment.
+> **Project status:** The repository includes PostgreSQL, backend, and frontend Kubernetes manifests and a GitHub Actions workflow that applies them to AWS EKS. This documents the configured deployment path; it does not claim a live production deployment.
 
 ## Architecture
 
@@ -13,7 +13,7 @@ flowchart LR
         ALB[Application Load Balancer ingress]
         Frontend[Next.js frontend<br/>Service + Deployment]
         Backend[Flask API<br/>Service + Deployment]
-        Database[(PostgreSQL<br/>Compose service; EKS manifests referenced but absent)]
+        Database[(PostgreSQL<br/>Compose service + EKS Deployment and Service)]
         ALB -->|/| Frontend
         ALB -->|/api| Backend
         Frontend -->|same-origin /api requests| ALB
@@ -100,7 +100,7 @@ Set any additional environment values required for the feature you are exercisin
 
 The frontend Dockerfile builds the Next.js application and serves it on port `3000`; the backend Dockerfile installs Python requirements and starts Gunicorn through its entrypoint. `docker-compose.yml` provides a local three-service stack.
 
-The `eks/` directory contains frontend/backend Deployments and Services, an ALB Ingress and IngressClass, plus a Fluent Bit ConfigMap. The Actions workflow is intended to:
+The `eks/` directory contains PostgreSQL, frontend, and backend Deployments and Services, an ALB Ingress and IngressClass, plus a Fluent Bit ConfigMap. The Actions workflow is configured to:
 
 1. Build and publish frontend/backend container images to Amazon ECR.
 2. Assume an AWS role through GitHub Actions OIDC.
@@ -108,7 +108,7 @@ The `eks/` directory contains frontend/backend Deployments and Services, an ALB 
 4. Apply database, backend, frontend, and ingress resources to EKS and wait for rollouts.
 5. Report pod/service state and inspect the ingress after deployment.
 
-**Reproducibility note:** the workflow applies `eks/db-deployment.yml` and `eks/db-service.yml`, but those files are absent from this repository checkout. Consequently, the database deployment portion cannot be reproduced from the committed manifests alone. The workflow also verifies Kubernetes resources and ingress configuration; it does not run application-level tests. No test suite files were found in this checkout.
+**Verification note:** the workflow applies the checked-in database, backend, frontend, and ingress manifests and includes rollout and post-deployment Kubernetes resource checks. It does not run application-level tests, and no application test suite files were found in this checkout. These workflow steps document deployment configuration; they are not evidence of a currently live production deployment.
 
 ## Monitoring, logging, and security configuration
 
@@ -119,6 +119,10 @@ The `eks/` directory contains frontend/backend Deployments and Services, an ALB 
 - The Ingress manifest is configured as internet-facing. TLS/certificate annotations are commented out; HTTPS is not evidenced by the checked-in ingress configuration.
 
 These statements describe checked-in configuration only. They are not a security audit or evidence of a currently healthy, secured production environment. Keep credentials out of source control and use managed secrets for deployments.
+
+## My contribution
+
+The repository history attributes two June 2025 commits to my GitHub account. They cover frontend homepage work, including page data and assets and edits to the hero, courses, mentor, newsletter, header, footer, and layout components. The wider team authored the majority of the repository history; I am not claiming sole authorship of the application, backend, or AWS/EKS deployment.
 
 ## License
 
