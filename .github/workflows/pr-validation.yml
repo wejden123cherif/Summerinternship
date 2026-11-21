@@ -8,8 +8,8 @@ permissions:
   contents: read
 
 jobs:
-  container-build:
-    name: Build application containers
+  frontend-build:
+    name: Build frontend container
     runs-on: ubuntu-latest
     steps:
       - name: Check out source
@@ -17,6 +17,13 @@ jobs:
 
       - name: Build frontend image
         run: docker build --file frontend/Dockerfile --tag smartovate-frontend:pr ./frontend
+
+  backend-build:
+    name: Build backend container
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
 
       - name: Build backend image
         run: docker build --file backend/dockerfile --tag smartovate-backend:pr ./backend
