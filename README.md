@@ -120,18 +120,6 @@ The `eks/` directory contains frontend/backend Deployments and Services, an ALB 
 
 These statements describe checked-in configuration only. They are not a security audit or evidence of a currently healthy, secured production environment. Keep credentials out of source control and use managed secrets for deployments.
 
-## Contributions
-
-This was a team project. My two commits in the repository history are from June 2025 and cover frontend homepage work: page data and assets, and changes to the hero, courses, mentor, newsletter, header, footer, and layout components. The broader repository history is primarily authored by other contributors. I am not claiming sole authorship of the application, backend, or AWS/EKS pipeline.
-
-## Deployment performance
-
-My CV reports that the GitHub Actions workflow automated EKS releases and that releases took **about five minutes** during the internship. This is a CV-reported project result, not a benchmark measured from this repository, a production SLA, or an independently verified duration. The checked-in workflow includes rollout/resource checks but does not retain timing evidence, and the missing database manifests mean the full deployment cannot be confirmed from this checkout.
-
-## Screenshots and evidence
-
-The repository contains frontend design assets, but no verified screenshots of a running application or deployment. The Mermaid architecture above is based on the checked-in frontend, backend, Compose, Kubernetes, and Actions configuration; it represents the intended path and explicitly marks missing database deployment manifests.
-
 ## License
 
 See [LICENSE](LICENSE).
