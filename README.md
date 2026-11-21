@@ -120,10 +120,6 @@ The `eks/` directory contains PostgreSQL, frontend, and backend Deployments and 
 
 These statements describe checked-in configuration only. They are not a security audit or evidence of a currently healthy, secured production environment. Keep credentials out of source control and use managed secrets for deployments.
 
-## My contribution
-
-The repository history attributes two June 2025 commits to my GitHub account. They cover frontend homepage work, including page data and assets and edits to the hero, courses, mentor, newsletter, header, footer, and layout components. The wider team authored the majority of the repository history; I am not claiming sole authorship of the application, backend, or AWS/EKS deployment.
-
 ## License
 
 See [LICENSE](LICENSE).
