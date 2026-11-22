@@ -1,8 +1,8 @@
 # Smartovate AI Website
 
-Smartovate is a web platform for presenting professional certification courses, instructors, and course details. This repository contains a Next.js frontend, a Flask REST API, PostgreSQL data models, and Docker/Kubernetes deployment configuration. It was developed by a wider team; my contribution is described separately below.
+Smartovate is a team-built platform for presenting professional certification courses, instructors, and course details. This repository contains a Next.js frontend, a Flask REST API, PostgreSQL data models, and Docker/Kubernetes deployment configuration.
 
-> **Project status:** The repository documents an AWS EKS deployment workflow, but the checked-in workflow refers to PostgreSQL Kubernetes manifests that are not present in this checkout. The README therefore describes the intended deployment path and does not claim a currently reproducible or live production deployment.
+> **Project status:** The repository includes PostgreSQL EKS Deployment and Service manifests, alongside the frontend/backend manifests and a GitHub Actions deployment workflow. These files document the intended EKS rollout; they do not establish that a cluster is currently running or that a production deployment is reproducible from this checkout alone.
 
 ## Architecture
 
@@ -13,7 +13,7 @@ flowchart LR
         ALB[Application Load Balancer ingress]
         Frontend[Next.js frontend<br/>Service + Deployment]
         Backend[Flask API<br/>Service + Deployment]
-        Database[(PostgreSQL<br/>Compose service; EKS manifests referenced but absent)]
+        Database[(PostgreSQL<br/>EKS Deployment + Service)]
         ALB -->|/| Frontend
         ALB -->|/api| Backend
         Frontend -->|same-origin /api requests| ALB
@@ -108,7 +108,7 @@ The `eks/` directory contains frontend/backend Deployments and Services, an ALB 
 4. Apply database, backend, frontend, and ingress resources to EKS and wait for rollouts.
 5. Report pod/service state and inspect the ingress after deployment.
 
-**Reproducibility note:** the workflow applies `eks/db-deployment.yml` and `eks/db-service.yml`, but those files are absent from this repository checkout. Consequently, the database deployment portion cannot be reproduced from the committed manifests alone. The workflow also verifies Kubernetes resources and ingress configuration; it does not run application-level tests. No test suite files were found in this checkout.
+The workflow applies the checked-in PostgreSQL manifests at `eks/db-deployment.yml` and `eks/db-service.yml`, then applies the backend, frontend, and ingress resources and waits for rollouts. A working rollout still depends on AWS/EKS access, correctly configured GitHub Actions secrets and OIDC trust, and the referenced container images. The workflow checks Kubernetes resources and ingress state; it does not run application-level tests. No test suite files were found in this checkout.
 
 ## Monitoring, logging, and security configuration
 
